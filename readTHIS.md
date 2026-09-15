@@ -16,15 +16,13 @@ Automated generation of epidemiological SEIR models in XML format and Python sim
 
 ## Configuration
 
-### Update Paths in `runGPT.py`
+### Update Paths in `llm_backends.py`
 
-Open `runGPT.py` and modify these lines at the top:
+Open `llm_backends.py` and modify these lines at the top:
 
 ```python
-# --- Configuration ---
 LLAMA_CPP_PATH = "./llama.cpp/main"              # Update with your llama.cpp path
 MODEL_PATH = "./models/gpt-oss-20b.gguf"         # Update with your model path
-BREAK_TIME = 10                                   # Seconds between generations
 ```
 
 **Examples:**
@@ -62,31 +60,36 @@ Ensure these files exist in your project directory:
 ### Run the Generator
 
 ```bash
-python runGPT.py
+# Stage 1 & 2: SEIR model generation (skeleton + .seirmodel) with the local GPT-OSS model
+python run_pipeline.py --provider gptoss --model all
+
+# Stage 3: Simulation scripts from ODE equations
+python run_stage3.py --provider gptoss --model all
 ```
 
-The script will:
-1. Generate SEIR XML models (Stage 1 & 2)
+The scripts will:
+1. Generate the SEIR XML skeleton (Stage 1) and the final `.seirmodel` (Stage 2) for each model
 2. Generate Python simulation scripts (Stage 3A & 3B)
-3. Save outputs to `prompt_sample/` and `simulation_scripts/` folders
+3. Save outputs to the provider's `prompt_sample/` folder and `simulation_scripts/`
 
 ### Enable/Disable Models
 
-By default, only HIV model generation is active. To enable other models, uncomment the relevant sections in `main()`:
+Use the `--model` argument to select which models to run (`hiv`, `covid`, `sir`, `malaria`, `ebola`, or `all`):
 
-```python
-# Uncomment to generate COVID model
-# generate_seirmodel(covidModel, "finalCovidModel.txt")
+```bash
+# Only HIV
+python run_pipeline.py --provider gptoss --model hiv
 
-# Uncomment to generate simulations
-# simulate(hiv_ode, "hiv_simulation.py")
+# Only HIV + COVID simulations
+python run_stage3.py --provider gptoss --model hiv covid
 ```
 
 ## Output
 
-- **SEIR Models:** `prompt_sample/finalHivModel.txt` (and others)
-- **Simulations:** `simulation_scripts/hiv_simulation.py` (and others)
-- **Graphs:** `simulation_HIV_Sexual_Behavior.png` (generated when simulation runs)
+- **SEIR skeletons:** `prompt_sample/{model}_skeleton.xml`
+- **SEIR models:** `prompt_sample/{model}.seirmodel`
+- **Simulations:** `simulation_scripts/{model}_simulation.py`
+- **Graphs:** `simulation_{model}.png` (generated when simulation runs)
 
 ## Troubleshooting
 

@@ -1,4 +1,5 @@
 google-generativeai
-pillow
+openai
+python-dotenv
 matplotlib
 pandas
