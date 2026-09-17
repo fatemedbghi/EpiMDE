@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="362796.0">
+  <compartments PrimaryName="Susceptible" population="363613.0" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Transmission from infected homosexual men" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="0.007821782178217822"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Transmission from infected women" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="2.526315789473684E-6"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Transmission from infected heterosexual men" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="1.355124355907057E-5"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="114.0" SecondaryName="Untreated Infected" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Initial treatment of infected individuals" target="//@compartments.2" rate="0.29997"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Progression to AIDS for untreated individuals" target="//@compartments.3" rate="0.03333"/>
+  </compartments>
+  <compartments PrimaryName="Treated" population="107.0" SecondaryName="with ART" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Progression to AIDS for treated individuals" target="//@compartments.3" rate="0.018"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="47.0" SecondaryName="living with AIDS" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Death from AIDS" target="//@compartments.4" rate="0.3333"/>
+  </compartments>
+  <compartments PrimaryName="HIV Deaths" product="//@products.0"/>
+  <externalSources name="Recruitment of Heterosexual Men" rate="147.0528" targetCompartment="//@compartments.0" targetStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from Susceptible (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from Untreated Infected (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from Treated (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from AIDS (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Heterosexual Men"/>
+  <groups name="SexualBehavior">
+    <values>Homosexual Men</values>
+    <values>Women</values>
+    <values>Heterosexual Men</values>
+  </groups>
+  <products name="SexualBehaviorProduct" description="Stratification by sexual behavior" groups="//@groups.0"/>
+</compartmental:CompartmentalModel>

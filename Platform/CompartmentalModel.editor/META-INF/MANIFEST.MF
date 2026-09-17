@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: CompartmentalModel.editor;singleton:=true
+Automatic-Module-Name: CompartmentalModel.editor
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: compartmentalmodel.presentation.CompartmentalEditorPlugin$Implementation
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Export-Package: compartmentalmodel.presentation
+Require-Bundle: org.eclipse.sirius, org.eclipse.sirius.ui, org.eclipse.sirius.diagram.ui, org.eclipse.core.runtime,
+ org.eclipse.core.resources;visibility:=reexport,
+ org.eclipse.core.commands,
+ org.eclipse.ui,
+ org.eclipse.jface,
+ CompartmentalModel.edit;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.emf.edit.ui;visibility:=reexport,
+ org.eclipse.ui.ide;visibility:=reexport,
+ org.eclipse.emf.transaction,
+ org.eclipse.emf.workspace
+Bundle-ActivationPolicy: lazy
+

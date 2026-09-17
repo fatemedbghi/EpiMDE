@@ -1,0 +1,10 @@
+Pupae (non-infectious): dPupae (non-infectious)/dt = + 1/τ2_v * Larvae (non-infectious, logistic) - φ * τ3_v * Pupae (non-infectious) - μ3_v * Pupae (non-infectious) 
+Susceptible female adults: dSusceptible female adults/dt = + φ * τ3_v * Pupae (non-infectious) - (b_v * Susceptible female adults * Infectious humans / 1.6331365E7) - μ_a_v * Susceptible female adults 
+Infectious humans: dInfectious humans/dt = + 1/τ_h * Exposed humans + r_h * 1.6331365E7 - γ_h * Infectious humans - μ_h * Infectious humans 
+Susceptible humans: dSusceptible humans/dt = + r_h * 1.6331365E7 - (b * Susceptible humans * Infectious female adults / 1.6331365E7) - μ_h * Susceptible humans 
+Eggs(non-infectious): dEggs(non-infectious)/dt = + f * 1.6331365E7 - 1/τ1_v * Eggs(non-infectious) - μ1_v * Eggs(non-infectious) 
+Recovered humans: dRecovered humans/dt = + γ_h * Infectious humans + r_h * 1.6331365E7 - μ_h * Recovered humans 
+Exposed female adults: dExposed female adults/dt = + (b_v * Susceptible female adults * Infectious humans / 1.6331365E7) - 1/τ_v * Exposed female adults - μ_a_v * Exposed female adults 
+Exposed humans: dExposed humans/dt = + (b * Susceptible humans * Infectious female adults / 1.6331365E7) + r_h * 1.6331365E7 - 1/τ_h * Exposed humans - μ_h * Exposed humans 
+Larvae (non-infectious, logistic): dLarvae (non-infectious, logistic)/dt = + 1/τ1_v * Eggs(non-infectious) - 1/τ2_v * Larvae (non-infectious, logistic) - μ2_v * Larvae (non-infectious, logistic) - δ_l * Larvae (non-infectious, logistic) 
+Infectious female adults: dInfectious female adults/dt = + 1/τ_v * Exposed female adults - μ_a_v * Infectious female adults 

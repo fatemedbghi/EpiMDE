@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="10000" globalBirthRate="0.00003" globalDeathRate="0.00002">
+
+  <!-- Age Group Definition -->
+  <groups name="Age" description="Age-based population stratification">
+    <values>0-17</values>
+    <values>18-65</values>
+    <values>66+</values>
+  </groups>
+
+  <!-- Gender Group Definition -->
+  <groups name="Gender" description="Gender-based population stratification">
+    <values>Male</values>
+    <values>Female</values>
+  </groups>
+
+  <!-- Product for Age AND Gender Stratification (Cartesian Product) -->
+  <products name="AgeAndGenderStratification" description="Combined age and gender stratification" groups="//@groups.0 //@groups.1"/>
+
+  <!-- Susceptible Population -->
+  <compartments PrimaryName="Susceptible" population="9500" product="//@products.0">
+    <!-- ContactFlow: Transmission from Infectious to Exposed -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+                   contactRate="0.000003"
+                   contactCompartment="//@compartments.2"
+                   description="Disease transmission through contact with infectious individuals"
+                   target="//@compartments.1">
+      <!-- Age AND Gender specific contact rates using multipliers only -->
+      <!-- Base rate: 0.000003 -->
+      <!-- Children (0-17) - higher contact rates -->
+      <stratumSpecificRates stratum="0-17,Male" multiplier="1.67"/>     <!-- 0.000003 × 1.67 = 0.00000501 -->
+      <stratumSpecificRates stratum="0-17,Female" multiplier="1.5"/>    <!-- 0.000003 × 1.5 = 0.0000045 -->
+      <!-- Adults (18-65) - baseline contact rates -->
+      <stratumSpecificRates stratum="18-65,Male" multiplier="1.1"/>     <!-- 0.000003 × 1.1 = 0.0000033 -->
+      <stratumSpecificRates stratum="18-65,Female" multiplier="0.9"/>   <!-- 0.000003 × 0.9 = 0.0000027 -->
+      <!-- Elderly (66+) - lower contact rates -->
+      <stratumSpecificRates stratum="66+,Male" multiplier="0.8"/>       <!-- 0.000003 × 0.8 = 0.0000024 -->
+      <stratumSpecificRates stratum="66+,Female" multiplier="0.67"/>    <!-- 0.000003 × 0.67 = 0.00000201 -->
+    </outgoingFlows>
+  </compartments>
+
+  <!-- Exposed (Incubating) Population -->
+  <compartments PrimaryName="Exposed" population="200" product="//@products.0">
+    <!-- RateFlow: Progression to Infectious -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="0.2"
+                   description="Progression from exposed to infectious (5 days average)"
+                   target="//@compartments.2">
+      <!-- Age AND Gender specific progression rates -->
+      <stratumSpecificRates stratum="0-17,Male" rate="0.25"/>
+      <stratumSpecificRates stratum="0-17,Female" rate="0.25"/>
+      <stratumSpecificRates stratum="18-65,Male" rate="0.2"/>
+      <stratumSpecificRates stratum="18-65,Female" rate="0.2"/>
+      <stratumSpecificRates stratum="66+,Male" rate="0.167"/>
+      <stratumSpecificRates stratum="66+,Female" rate="0.167"/>
+    </outgoingFlows>
+  </compartments>
+
+  <!-- Infectious Population -->
+  <compartments PrimaryName="Infectious" population="150" product="//@products.0">
+    <!-- RateFlow: Recovery -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="0.14"
+                   description="Recovery from infection (7 days average)"
+                   target="//@compartments.3">
+      <!-- Males tend to recover slightly slower -->
+      <stratumSpecificRates stratum="0-17,Male" rate="0.16"/>
+      <stratumSpecificRates stratum="0-17,Female" rate="0.167"/>
+      <stratumSpecificRates stratum="18-65,Male" rate="0.13"/>
+      <stratumSpecificRates stratum="18-65,Female" rate="0.15"/>
+      <stratumSpecificRates stratum="66+,Male" rate="0.09"/>
+      <stratumSpecificRates stratum="66+,Female" rate="0.11"/>
+    </outgoingFlows>
+
+    <!-- RateFlow: Disease-related death (age AND gender specific) -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="0.01"
+                   description="Disease-related death"
+                   target="//@compartments.4">
+      <!-- Males have higher mortality rates in general -->
+      <stratumSpecificRates stratum="0-17,Male" rate="0.0012"/>
+      <stratumSpecificRates stratum="0-17,Female" rate="0.0008"/>
+      <stratumSpecificRates stratum="18-65,Male" rate="0.007"/>
+      <stratumSpecificRates stratum="18-65,Female" rate="0.003"/>
+      <stratumSpecificRates stratum="66+,Male" rate="0.06"/>
+      <stratumSpecificRates stratum="66+,Female" rate="0.04"/>
+    </outgoingFlows>
+  </compartments>
+
+  <!-- Recovered Population -->
+  <compartments PrimaryName="Recovered" population="100" product="//@products.0"/>
+
+  <!-- Death Compartment -->
+  <compartments PrimaryName="Death" population="50" product="//@products.0"/>
+
+  <!-- Birth Sources: New births into Susceptible compartment (roughly 50/50 male/female) -->
+  <externalSources name="Natural births (Male)"
+                rate="0.000015"
+                targetCompartment="//@compartments.0"
+                targetStratum="0-17,Male"/>
+
+  <externalSources name="Natural births (Female)"
+                rate="0.000015"
+                targetCompartment="//@compartments.0"
+                targetStratum="0-17,Female"/>
+
+  <!-- Death Sinks: Natural deaths from all compartments (Age AND Gender specific) -->
+  <!-- Susceptible -->
+  <externalSinks name="Natural death (Susceptible - 0-17,Male)"
+              rate="0.000012"
+              sourceCompartment="//@compartments.0"
+              sourceStratum="0-17,Male"/>
+
+  <externalSinks name="Natural death (Susceptible - 0-17,Female)"
+              rate="0.000008"
+              sourceCompartment="//@compartments.0"
+              sourceStratum="0-17,Female"/>
+
+  <externalSinks name="Natural death (Susceptible - 18-65,Male)"
+              rate="0.000025"
+              sourceCompartment="//@compartments.0"
+              sourceStratum="18-65,Male"/>
+
+  <externalSinks name="Natural death (Susceptible - 18-65,Female)"
+              rate="0.000015"
+              sourceCompartment="//@compartments.0"
+              sourceStratum="18-65,Female"/>
+
+  <externalSinks name="Natural death (Susceptible - 66+,Male)"
+              rate="0.0012"
+              sourceCompartment="//@compartments.0"
+              sourceStratum="66+,Male"/>
+
+  <externalSinks name="Natural death (Susceptible - 66+,Female)"
+              rate="0.0008"
+              sourceCompartment="//@compartments.0"
+              sourceStratum="66+,Female"/>
+
+  <!-- Exposed -->
+  <externalSinks name="Natural death (Exposed - 0-17,Male)"
+              rate="0.000012"
+              sourceCompartment="//@compartments.1"
+              sourceStratum="0-17,Male"/>
+
+  <externalSinks name="Natural death (Exposed - 0-17,Female)"
+              rate="0.000008"
+              sourceCompartment="//@compartments.1"
+              sourceStratum="0-17,Female"/>
+
+  <externalSinks name="Natural death (Exposed - 18-65,Male)"
+              rate="0.000025"
+              sourceCompartment="//@compartments.1"
+              sourceStratum="18-65,Male"/>
+
+  <externalSinks name="Natural death (Exposed - 18-65,Female)"
+              rate="0.000015"
+              sourceCompartment="//@compartments.1"
+              sourceStratum="18-65,Female"/>
+
+  <externalSinks name="Natural death (Exposed - 66+,Male)"
+              rate="0.0012"
+              sourceCompartment="//@compartments.1"
+              sourceStratum="66+,Male"/>
+
+  <externalSinks name="Natural death (Exposed - 66+,Female)"
+              rate="0.0008"
+              sourceCompartment="//@compartments.1"
+              sourceStratum="66+,Female"/>
+
+  <!-- Infectious -->
+  <externalSinks name="Natural death (Infectious - 0-17,Male)"
+              rate="0.000012"
+              sourceCompartment="//@compartments.2"
+              sourceStratum="0-17,Male"/>
+
+  <externalSinks name="Natural death (Infectious - 0-17,Female)"
+              rate="0.000008"
+              sourceCompartment="//@compartments.2"
+              sourceStratum="0-17,Female"/>
+
+  <externalSinks name="Natural death (Infectious - 18-65,Male)"
+              rate="0.000025"
+              sourceCompartment="//@compartments.2"
+              sourceStratum="18-65,Male"/>
+
+  <externalSinks name="Natural death (Infectious - 18-65,Female)"
+              rate="0.000015"
+              sourceCompartment="//@compartments.2"
+              sourceStratum="18-65,Female"/>
+
+  <externalSinks name="Natural death (Infectious - 66+,Male)"
+              rate="0.0012"
+              sourceCompartment="//@compartments.2"
+              sourceStratum="66+,Male"/>
+
+  <externalSinks name="Natural death (Infectious - 66+,Female)"
+              rate="0.0008"
+              sourceCompartment="//@compartments.2"
+              sourceStratum="66+,Female"/>
+
+  <!-- Recovered -->
+  <externalSinks name="Natural death (Recovered - 0-17,Male)"
+              rate="0.000012"
+              sourceCompartment="//@compartments.3"
+              sourceStratum="0-17,Male"/>
+
+  <externalSinks name="Natural death (Recovered - 0-17,Female)"
+              rate="0.000008"
+              sourceCompartment="//@compartments.3"
+              sourceStratum="0-17,Female"/>
+
+  <externalSinks name="Natural death (Recovered - 18-65,Male)"
+              rate="0.000025"
+              sourceCompartment="//@compartments.3"
+              sourceStratum="18-65,Male"/>
+
+  <externalSinks name="Natural death (Recovered - 18-65,Female)"
+              rate="0.000015"
+              sourceCompartment="//@compartments.3"
+              sourceStratum="18-65,Female"/>
+
+  <externalSinks name="Natural death (Recovered - 66+,Male)"
+              rate="0.0012"
+              sourceCompartment="//@compartments.3"
+              sourceStratum="66+,Male"/>
+
+  <externalSinks name="Natural death (Recovered - 66+,Female)"
+              rate="0.0008"
+              sourceCompartment="//@compartments.3"
+              sourceStratum="66+,Female"/>
+
+</compartmental:CompartmentalModel>

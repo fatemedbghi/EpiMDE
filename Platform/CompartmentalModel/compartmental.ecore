@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="compartmentalmodel" nsURI="http://example.com/compartmentalmodel"
+    nsPrefix="compartmental">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="EpiMDE Metamodel - A comprehensive framework for epidemiological compartmental models with support for symbolic/parametric modeling, population stratification, and automatic equation generation."/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="Compartment">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a population compartment in the model. For epidemiological models, this is a disease state (Susceptible, Infected, etc.). For traffic models, this is a road link with vehicle density. The optional supplyFunction and junctionRule attributes enable traffic network modeling without affecting disease models."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="PrimaryName" ordered="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="population" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingFlows" upperBound="-1"
+        eType="#//Flow" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SecondaryName" ordered="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="product" eType="#//Product"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supplyFunction" eType="#//SupplyFunction"
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional supply function for traffic network modeling. When present, indicates this compartment represents a road link with capacity constraints (supply-demand dynamics). Disease models leave this null and use standard rate-based flows."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="junctionRule" eType="#//JunctionRuleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional junction rule for traffic network modeling. Specifies how flows are computed at network junctions (NONE for disease models, PPFIFO for traffic). Default is NONE."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Flow" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Compartment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RateFlow" eSuperTypes="#//Flow">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Rate-based transition between compartments (e.g., progression from Exposed to Infectious, recovery from Infectious to Recovered). Rate is independent of other compartment populations. Supports both numeric (rate attribute) and parametric (rateParameter reference) modeling."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Numeric rate value (per time unit). Used for numeric models or as default when rateParameter is not set. For parametric models, set this to 0.0 and use rateParameter instead."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a Parameter defining this flow's rate. When set, this takes precedence over the numeric 'rate' attribute. Enables symbolic/parametric modeling where the rate is defined by name (e.g., γₕ, ρₕ, θ) instead of a hardcoded number."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stratumSpecificRates" upperBound="-1"
+        eType="#//StratumSpecificRate" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional stratum-specific rates for population stratification. Allows different rates for different population segments (e.g., different recovery rates by age group)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContactFlow" eSuperTypes="#//Flow">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Contact-based transmission between compartments, where infection rate depends on contact with individuals in another compartment (e.g., susceptibles becoming exposed through contact with infectious individuals). Models frequency-dependent or density-dependent transmission. Supports both numeric and parametric modeling."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contactCompartment" eType="#//Compartment">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The compartment whose population influences transmission (e.g., Infectious compartment for disease transmission, or Infected Mosquitoes for vector-borne diseases)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contactRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Numeric contact/transmission rate. Used for numeric models or as default when contactRateParameter is not set. For parametric models, set this to 0.0 and use contactRateParameter instead."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contactRateParameter" eType="#//Parameter">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a Parameter defining this flow's contact rate. When set, this takes precedence over the numeric 'contactRate' attribute. Enables symbolic/parametric modeling (e.g., β₁a(T) for temperature-dependent mosquito biting rate)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contactParameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Legacy string-based parameter specification. Deprecated in favor of contactRateParameter for better type safety and tool support."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stratumSpecificRates" upperBound="-1"
+        eType="#//StratumSpecificRate" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional stratum-specific contact rates for population stratification. Allows different transmission rates between different population segments (e.g., age-specific contact matrices)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalSource">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="External inflow into a compartment. Examples: births (disease), onramps (traffic), material input (manufacturing), packet generators (networks)."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetCompartment" eType="#//Compartment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetStratum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fixedRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalSink">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="External outflow from a compartment. Examples: deaths (disease), offramps (traffic), waste output (manufacturing), packet drops (networks)."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceCompartment" eType="#//Compartment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceStratum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StratumSpecificRate">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stratum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+        defaultValueLiteral="1.0"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiplierParameter" eType="#//Parameter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Group">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Product">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
+        eType="#//Group"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a named parameter that can be referenced by flows, birth sources, and death sinks. Supports symbolic modeling with three types: CONSTANT (fixed named values like pi=0.012), VARIABLE (simulation-time inputs like temperature), and EXPRESSION (computed values like beta2=eta_S*IM). Enables Greek symbols (β, μ, γ) and subscripts in names for professional mathematical notation."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Parameter name, displayed in diagrams and equations. Supports Unicode characters including Greek letters (α, β, γ, δ, μ, ρ, θ, λ) and subscripts (ₕ, ᵥ, ₁, ₂). Example: 'β₁', 'μₕ', 'a(T)'."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//ParameterType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Parameter type: CONSTANT (fixed value with name), VARIABLE (placeholder for runtime input), or EXPRESSION (computed from other parameters/compartments). Defaults to CONSTANT if not specified."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="For CONSTANT/VARIABLE: numeric value or formula. For EXPRESSION: mathematical expression referencing other parameters and compartments (e.g., 'eta_S * IM' or 'μₕ + 0.017325')."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Human-readable description of what this parameter represents (e.g., 'Natural mortality rate of human population')."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Physical unit of measurement (e.g., 'per day', '1/time', 'dimensionless', '°C'). Supports Unicode symbols."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ParameterType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Enumeration defining the three types of parameters supported by EpiMDE: CONSTANT (fixed named values), VARIABLE (simulation-time inputs), and EXPRESSION (computed from other parameters)."/>
+    </eAnnotations>
+    <eLiterals name="CONSTANT" literal="CONSTANT">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Fixed value with a name, used for model parameters that don't change during simulation (e.g., natural death rate μₕ = 0.001384)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="VARIABLE" value="1" literal="VARIABLE">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Placeholder for values provided at simulation time, such as environmental conditions (temperature T, rainfall R) or intervention levels."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="EXPRESSION" value="2" literal="EXPRESSION">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Computed value defined as a mathematical expression referencing other parameters and/or compartments (e.g., β₂a(T) = β₂ * a(T), or μₕ+δ = μₕ + 0.017325)."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SupplyFunction">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Defines supply and demand functions for flow networks based on capacity constraints and flow characteristics. Originally designed for traffic networks (triangular fundamental diagram) but generalizable to other flow systems. When a Compartment has a SupplyFunction, it represents a flow-constrained node rather than a simple state (e.g., road link in traffic, pipeline in fluids, queue in systems). Disease models do not use supply functions."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SupplyFunctionType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Type of supply/demand function: TRIANGULAR (piecewise linear with critical point), LINEAR (proportional), or CUSTOM (user-defined). TRIANGULAR follows flow network models like Coogan &amp; Arcak (2015) for traffic."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxDensity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximum density/capacity: the saturation point where no more entities can be stored (e.g., ρ^jam in traffic - vehicles per length when stopped, max queue size in systems, storage capacity in networks). For constrained nodes only; source nodes may have unbounded capacity."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="criticalDensity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Critical density/threshold: the density at which maximum throughput occurs (e.g., ρ^crit in traffic). Below this is efficient/free-flow operation, above is congested/constrained regime. Typically criticalDensity &lt; maxDensity."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxThroughput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximum throughput/capacity: the maximum flow rate that can pass through this node (e.g., Φ^crit in traffic - vehicles per time, max processing rate in systems, bandwidth in networks). Achieved at criticalDensity."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxDemand" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximum demand/output rate: upper bound on outflow for source nodes (e.g., Φ^max for onramps in traffic, max generation rate for sources, service rate for queues). For constrained nodes, leave at 0 (not used). Source nodes act as unbounded storage with demand bounded by maxDemand."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isSourceNode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="True if this is a source/entry node with external input (e.g., onramp in traffic, generator in systems, entry queue in networks), false for internal constrained nodes. Source nodes typically have unbounded storage capacity and use only demand function; constrained nodes have both supply and demand functions."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SupplyFunctionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Type of supply/demand function for traffic links. TRIANGULAR is the standard model from traffic flow theory (Coogan &amp; Arcak 2015, Daganzo 1994)."/>
+    </eAnnotations>
+    <eLiterals name="NONE" literal="NONE">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="No supply function (default for disease models)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TRIANGULAR" value="1" literal="TRIANGULAR">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Triangular fundamental diagram: demand increases linearly until ρ^crit, supply decreases linearly from ρ^crit to ρ^jam. Standard traffic model."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="LINEAR" value="2" literal="LINEAR">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Simplified linear model (for testing or special cases)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="CUSTOM" value="3" literal="CUSTOM">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="User-defined custom supply/demand functions."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TRM_MAK" value="4" literal="TRM_MAK">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Traffic Reaction Model with Mass Action Kinetic decomposition: g(ρ, ν) = ω·ρ·ν where ν = ρ^max - ρ. Uses parameter ω (omega) for reaction rate. Kinetic/compartmental interpretation of traffic flow (Pereira et al. 2024)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TRM_CAPACITATED" value="5" literal="TRM_CAPACITATED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Traffic Reaction Model with Capacitated decomposition: g(ρ, ν) = D(ρ)·Q(ρ^max - ν)/Φ^max. Multiplicative coupling of demand and supply. Optional parameter C for capacity drop (Pereira et al. 2024)."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JunctionRuleType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Rule for computing flows at network junctions in traffic models. NONE is used for disease models which don't have junction constraints."/>
+    </eAnnotations>
+    <eLiterals name="NONE" literal="NONE">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="No junction rule (default for disease models). Flows are computed directly from rates without capacity constraints."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="PPFIFO" value="1" literal="PPFIFO">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Proportional Priority, First-In-First-Out rule (Coogan &amp; Arcak 2015). Computes α_v(ρ) to scale demands proportionally while respecting supply constraints: α_v(ρ) = max{α ∈ [0,1] : α ∑_j β_jk Φ^out_j ≤ Φ^in_k ∀k}."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="CUSTOM" value="2" literal="CUSTOM">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="User-defined custom junction rule."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompartmentalModel">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Root container for epidemiological compartmental models. Supports both numeric and parametric (symbolic) modeling approaches. Contains compartments, flows, parameters, stratification groups, and demographic sources/sinks. Can represent SEIR, SIR, SEIRS, vector-borne, and other compartmental model variants."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="compartments" upperBound="-1"
+        eType="#//Compartment" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Population compartments representing disease states (e.g., Susceptible, Exposed, Infectious, Recovered) or vector states (e.g., Susceptible Mosquitoes, Infected Mosquitoes)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="externalSources" upperBound="-1"
+        eType="#//ExternalSource" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="External inflows into compartments. Examples: births/recruitment (disease), onramps (traffic), material input (manufacturing), packet generators (networks)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="externalSinks" upperBound="-1"
+        eType="#//ExternalSink" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="External outflows from compartments. Examples: deaths (disease), offramps (traffic), waste output (manufacturing), packet drops (networks)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
+        eType="#//Group" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Population stratification groups (age, geographic location, risk level, vaccination status, etc.) used to segment the population into subgroups with potentially different dynamics."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="products" upperBound="-1"
+        eType="#//Product" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Cartesian products of groups for multi-dimensional stratification (e.g., crossing age groups with vaccination status to create age-vaccinated strata)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//Parameter" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Named parameters (CONSTANT, VARIABLE, EXPRESSION) that can be referenced by flows, birth sources, and death sinks. Enables symbolic/parametric modeling where model structure is separated from parameter values."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalPopulation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Total population size used for normalization in contact-based transmission (frequency-dependent vs density-dependent). Sum of all compartment populations should typically equal this value."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="globalBirthRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional global birth rate applied uniformly across the population. Can be overridden by compartment-specific birth sources."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="globalDeathRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional global death rate applied uniformly across the population. Can be overridden by compartment-specific death sinks."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

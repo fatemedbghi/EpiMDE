@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+    <compartments PrimaryName="Susceptible male rodents" SecondaryName="S_m">
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.4" description="Infection from infectious males"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.5" description="Infection from infectious females"/>
+    </compartments>
+    <compartments PrimaryName="Exposed male rodents" SecondaryName="E_m">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.7" description="Progression to infectious"/>
+    </compartments>
+    <compartments PrimaryName="Infectious male rodents" SecondaryName="I_m">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.8" description="Recovery"/>
+    </compartments>
+    <compartments PrimaryName="Recovered male rodents" SecondaryName="R_m"/>
+    <compartments PrimaryName="Susceptible female rodents" SecondaryName="S_f">
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.6" description="Infection from infectious males"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.5" description="Infection from infectious females"/>
+    </compartments>
+    <compartments PrimaryName="Exposed female rodents" SecondaryName="E_f">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.6" rateParameter="//@parameters.7" description="Progression to infectious"/>
+    </compartments>
+    <compartments PrimaryName="Infectious female rodents" SecondaryName="I_f">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.7" rateParameter="//@parameters.9" description="Recovery"/>
+    </compartments>
+    <compartments PrimaryName="Recovered female rodents" SecondaryName="R_f"/>
+    <compartments PrimaryName="Susceptible humans" SecondaryName="S_h">
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.13" description="Zoonotic infection from male rodents"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.13" description="Zoonotic infection from female rodents"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.10" contactRateParameter="//@parameters.14" description="Interhuman infection"/>
+    </compartments>
+    <compartments PrimaryName="Exposed humans" SecondaryName="E_h">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.15" description="Progression to infectious"/>
+    </compartments>
+    <compartments PrimaryName="Infectious humans" SecondaryName="I_h">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11" rateParameter="//@parameters.16" description="Recovery"/>
+    </compartments>
+    <compartments PrimaryName="Recovered humans" SecondaryName="R_h"/>
+    <externalSources name="Rodent_Birth_Male" rateParameter="//@parameters.19" targetCompartment="//@compartments.0"/>
+    <externalSources name="Rodent_Birth_Female" rateParameter="//@parameters.19" targetCompartment="//@compartments.4"/>
+    <externalSources name="Human_Birth" rateParameter="//@parameters.10" targetCompartment="//@compartments.8"/>
+    <externalSinks name="Death_S_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Death_E_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Death_I_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Death_R_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.3"/>
+    <externalSinks name="Death_S_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Death_E_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.5"/>
+    <externalSinks name="Death_I_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.6"/>
+    <externalSinks name="Death_R_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.7"/>
+    <externalSinks name="Death_S_h" rateParameter="//@parameters.11" sourceCompartment="//@compartments.8"/>
+    <externalSinks name="Death_E_h" rateParameter="//@parameters.11" sourceCompartment="//@compartments.9"/>
+    <externalSinks name="Death_I_h_Natural" rateParameter="//@parameters.11" sourceCompartment="//@compartments.10"/>
+    <externalSinks name="Death_R_h" rateParameter="//@parameters.11" sourceCompartment="//@compartments.11"/>
+    <externalSinks name="Disease_Death_I_h" rateParameter="//@parameters.12" sourceCompartment="//@compartments.10"/>
+    <parameters name="b" description="rodent average litter size"/>
+    <parameters name="K" description="rodent carrying capacity"/>
+    <parameters name="a" description="density-independent rodent death rate"/>
+    <parameters name="c" description="density-dependent rodent death coefficient"/>
+    <parameters name="beta_m" description="male-male rodent transmission rate"/>
+    <parameters name="beta_f" description="female-to-any rodent transmission rate"/>
+    <parameters name="beta_mf" description="male-to-female rodent transmission rate"/>
+    <parameters name="delta" description="rodent incubation rate"/>
+    <parameters name="gamma_m" description="male rodent recovery rate"/>
+    <parameters name="gamma_f" description="female rodent recovery rate"/>
+    <parameters name="B_h" description="human birth rate"/>
+    <parameters name="d_h" description="human natural death rate"/>
+    <parameters name="alpha_h" description="human disease-induced death rate"/>
+    <parameters name="beta_rh" description="zoonotic transmission rate, rodent to human"/>
+    <parameters name="beta_hh" description="interhuman transmission rate"/>
+    <parameters name="delta_h" description="human incubation rate"/>
+    <parameters name="gamma_h" description="human recovery rate"/>
+    <parameters name="rodent_death_rate" type="EXPRESSION" expression="a + c * (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f)" description="Total density-dependent rodent death rate"/>
+    <parameters name="rodent_birth_rate_total" type="EXPRESSION" expression="b * (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f) / (1 + (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f) / K)" description="Total rodent birth rate (B)"/>
+    <parameters name="rodent_birth_rate_per_sex" type="EXPRESSION" expression="0.5 * rodent_birth_rate_total" description="Rodent birth rate per sex (B/2)"/>
+</compartmental:CompartmentalModel>

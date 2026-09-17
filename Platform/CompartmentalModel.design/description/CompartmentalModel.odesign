@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="CompartmentalModel" version="12.0.0.2017041100">
+  <ownedViewpoints name="MyViewpoint">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Diagram" initialisation="true" domainClass="compartmentalmodel.CompartmentalModel" enablePopupBars="true">
+      <metamodel href="../../CompartmentalModel/compartmental.ecore#/"/>
+      <layout xsi:type="description_1:CompositeLayout" padding="60" direction="LeftToRight"/>
+      <defaultLayer name="Diagram">
+        <nodeMappings name="Compartment" semanticCandidatesExpression="compartments" domainClass="Compartment"/>
+        <edgeMappings name="Flow" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Compartment']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Compartment']" targetFinderExpression="aql:self.target" sourceFinderExpression="aql:self.source" domainClass="Flow" useDomainElement="true">
+          <style sizeComputationExpression="2" centeredSourceMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Compartment']">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="feature:description">
+              <labelFormat>bold</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+      </defaultLayer>
+      <additionalLayers name="Default" activeByDefault="true">
+        <nodeMappings name="CompartmentNode" semanticCandidatesExpression="aql:self.compartments" domainClass="compartmentalmodel.Compartment">
+          <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\nρ=' + self.population.toString() + (if self.supplyFunction &lt;&gt; null then '\n[' + self.supplyFunction.type.toString() + ']' else '' endif)" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+          </style>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRIANGULAR' and self.supplyFunction.isSourceNode">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="5" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[' + self.supplyFunction.type.toString() + '-SRC]' + '\nΦ_max=' + self.supplyFunction.maxDemand.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="7">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_purple']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRIANGULAR' and not self.supplyFunction.isSourceNode">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[' + self.supplyFunction.type.toString() + ']' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRM_MAK'">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="6" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[TRM-MAK]' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRM_CAPACITATED'">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="6" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[TRM-CAPACITATED]' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('A') or self.PrimaryName.startsWith('a')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('B') or self.PrimaryName.startsWith('b')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6" borderColorExpression="service:borderColorFromPrimaryName(self.PrimaryName)">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('C') or self.PrimaryName.startsWith('c')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('D') or self.PrimaryName.startsWith('d')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('E') or self.PrimaryName.startsWith('e')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('F') or self.PrimaryName.startsWith('f')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_chocolate']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('G') or self.PrimaryName.startsWith('g')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('H') or self.PrimaryName.startsWith('h')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='purple']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('I') or self.PrimaryName.startsWith('i')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('J') or self.PrimaryName.startsWith('j')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('K') or self.PrimaryName.startsWith('k')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_chocolate']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('L') or self.PrimaryName.startsWith('l')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('M') or self.PrimaryName.startsWith('m')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('N') or self.PrimaryName.startsWith('n')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('O') or self.PrimaryName.startsWith('o')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_purple']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('P') or self.PrimaryName.startsWith('p')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_red']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('Q') or self.PrimaryName.startsWith('q')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('R') or self.PrimaryName.startsWith('r')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('S') or self.PrimaryName.startsWith('s')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('T') or self.PrimaryName.startsWith('t')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='yellow']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('U') or self.PrimaryName.startsWith('u')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='chocolate']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('V') or self.PrimaryName.startsWith('v')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('W') or self.PrimaryName.startsWith('w')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_orange']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('X') or self.PrimaryName.startsWith('x')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('Y') or self.PrimaryName.startsWith('y')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('Z') or self.PrimaryName.startsWith('z')">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <nodeMappings name="ExternalSourceNode" semanticCandidatesExpression="aql:self.externalSources" domainClass="compartmentalmodel.ExternalSource">
+          <style xsi:type="style:EllipseNodeDescription" borderSizeComputationExpression="2" labelSize="10" labelExpression="aql:self.name + '\\n' + if self.rateParameter &lt;&gt; null then self.rateParameter.name else self.rate.toString() endif" labelPosition="node" resizeKind="NSEW" width="8" height="8">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="ExternalSinkNode" semanticCandidatesExpression="aql:self.externalSinks" domainClass="compartmentalmodel.ExternalSink">
+          <style xsi:type="style:EllipseNodeDescription" borderSizeComputationExpression="2" labelSize="10" labelExpression="aql:self.name + '\\n' + if self.rateParameter &lt;&gt; null then self.rateParameter.name else self.rate.toString() endif" labelPosition="node" resizeKind="NSEW" width="8" height="8">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+          </style>
+          <conditionnalStyles predicateExpression="aql:self.isCOVIDDeath">
+            <style xsi:type="style:EllipseNodeDescription" borderSizeComputationExpression="3" labelSize="10" labelExpression="aql:self.name + '\\n' + if self.rateParameter &lt;&gt; null then self.rateParameter.name else self.rate.toString() endif" labelPosition="node" resizeKind="NSEW" width="8" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <edgeMappings name="FlowEdge" semanticCandidatesExpression="aql:self.compartments.outgoingFlows" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetFinderExpression="aql:self.target" sourceFinderExpression="aql:self.eContainer()" domainClass="compartmentalmodel.Flow" useDomainElement="true">
+          <style sourceArrow="OutputArrow" foldingStyle="SOURCE" endsCentering="Target">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="feature:description">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="ExternalSourceEdge" semanticCandidatesExpression="aql:self.externalSources" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='ExternalSourceNode']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetFinderExpression="aql:self.targetCompartment" sourceFinderExpression="aql:self" domainClass="compartmentalmodel.ExternalSource" useDomainElement="true">
+          <style lineStyle="dash" sourceArrow="OutputArrow" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="aql:if self.rateParameter &lt;&gt; null then self.rateParameter.name else self.rate.toString() endif">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="ExternalSinkEdge" semanticCandidatesExpression="aql:self.externalSinks" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='ExternalSinkNode']" targetFinderExpression="aql:self" sourceFinderExpression="aql:self.sourceCompartment" domainClass="compartmentalmodel.ExternalSink" useDomainElement="true">
+          <style lineStyle="dash" sourceArrow="OutputArrow" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="aql:if self.rateParameter &lt;&gt; null then self.rateParameter.name else self.rate.toString() endif">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="ContactEdge" semanticCandidatesExpression="aql:self.compartments.outgoingFlows->select(f | f.oclIsKindOf(compartmentalmodel::ContactFlow))" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" sourceFinderExpression="aql:self.oclAsType(compartmentalmodel::ContactFlow).contactCompartment" targetFinderExpression="aql:self.eContainer()" domainClass="compartmentalmodel.ContactFlow" useDomainElement="true">
+          <style lineStyle="dot" sourceArrow="OutputArrow" targetArrow="InputArrow" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+            <centerLabelStyleDescription labelSize="10" labelExpression="feature:description">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+      </additionalLayers>
+      <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="CompartmentalModel.design.Services"/>
+  </ownedViewpoints>
+</description:Group>

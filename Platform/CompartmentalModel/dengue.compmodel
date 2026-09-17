@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <compartments PrimaryName="Susceptible humans"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.5"  contactRateParameter="//@parameters.3"/>
+  	</compartments>
+
+    <compartments PrimaryName="Exposed humans"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3"  rateParameter="//@parameters.11"/>
+      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2"  rateParameter="//@parameters.5"/>
+  	</compartments>
+
+    <compartments PrimaryName="Asymptomatic infectious humans"> 
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.5"  contactRateParameter="//@parameters.7"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.9"/>
+  	</compartments>
+  
+    <compartments PrimaryName="Symptomatic infectious humans" > 
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.8"/>
+    </compartments>
+    <compartments PrimaryName="Recovered humans" /> 
+
+    <compartments PrimaryName="Infectious mosquitoes" /> 
+
+    <compartments PrimaryName="Susceptible mosquitoes" > 
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.2"  contactRateParameter="//@parameters.10"/>
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.3"  contactRateParameter="//@parameters.10"/>
+    </compartments>
+
+
+    <externalSources name="Birth" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+    
+    <externalSinks name="Natural_Death_S" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Natural_Death_E" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Natural_Death_I" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Natural_Death_A" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
+    <externalSinks name="Natural_Death_R" rateParameter="//@parameters.1" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Natural_Death_Mosquito" rateParameter="//@parameters.2" sourceCompartment="//@compartments.5"/>
+    <externalSinks name="Natural_Death_Mosquito" rateParameter="//@parameters.2" sourceCompartment="//@compartments.6"/>
+
+
+
+    <parameters name="B" expression="250" description="Constant influx" unit="1/time"/> 
+    <parameters name="μh" expression="0.005" description="Natural death rate Humans" unit="1/time"/> 
+    <parameters name="μv" expression="0.65" description="Natural death rate Mosquito" unit="1/time"/> 
+    <parameters name="ha" expression="18" description="human infection rate" unit="1/time"/> 
+    <parameters name="σ" expression="0.007" description="Probability an exposed host becomes symptomatic" unit=""/> 
+    <parameters name="(1-σ) * k" type="EXPRESSION" expression="(1-σ) * k" description="Probability an exposed host becomes asymptomatic" unit="1/time"/> 
+    <parameters name="ρ" expression="0.5" description="Reinfection intensity factor" unit=""/> 
+    <parameters name="ρ * ha" type="EXPRESSION" expression="ρ * ha" description="Reinfection of asymptomatic" unit="1/time"/> 
+    <parameters name="γ1a" expression="0.5" description="recovery rates" unit="1/time"/> 
+    <parameters name="γ2a" expression="0.5" description="recovery rates" unit="1/time"/> 
+    <parameters name="va" expression="8" description="mosquito infection rate" unit="1/time"/> 
+    <parameters name="σ * k" type="EXPRESSION" expression="σ * k" description="Reinfection of asymptomatic" unit="1/time"/> 
+    <parameters name="k" expression="0.6" description="latent progression rate" unit="1/time"/> 
+</compartmental:CompartmentalModel>

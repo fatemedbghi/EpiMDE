@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <parameters name="L" description="Recruitment rate to children group"/>
+  <parameters name="χ_U" description="Un-monitored children Vaccination rate"/>
+  <parameters name="χ_M" description="Monitored children Vaccination rate"/>
+  <parameters name="χ_A" description="Adult Vaccination rate"/>
+  <parameters name="β_C" description="Transmission rate for children"/>
+  <parameters name="β_A" description="Transmission rate for adults"/>
+  <parameters name="μ" description="Natural death rate"/>
+  <parameters name="γ" description="Rate of being immune after recovery from infection"/>
+  <parameters name="j" description="Maturation rate from child to adult"/>
+  <parameters name="ε" description="Vaccine failure factor (1 - effectiveness)"/>
+  <parameters name="η_A" description="Rate of being immune for vaccinated adults"/>
+  <parameters name="η_U" description="Rate of being immune for un-monitored vaccinated children"/>
+  <parameters name="η_M" description="Rate of being immune for monitored vaccinated children"/>
+  <parameters name="δ" description="Incubation rate (progression from Exposed to Infectious)"/>
+  <parameters name="α" description="Disease-induced death rate"/>
+  <parameters name="β_C_breakthrough" type="EXPRESSION" expression="ε * β_C" description="Breakthrough transmission rate for vaccinated children"/>
+  <parameters name="β_A_breakthrough" type="EXPRESSION" expression="ε * β_A" description="Breakthrough transmission rate for vaccinated adults"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5" rateParameter="//@parameters.2" description="Monitored vaccination"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.1" description="Un-monitored vaccination"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.1" rateParameter="//@parameters.8" description="Maturation to adult"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.4" description="Infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.4" description="Infection from infectious adults"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.5" description="Infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.5" description="Infection from infectious adults"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4" rateParameter="//@parameters.3" description="Adult vaccination"/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.15" description="Breakthrough infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.15" description="Breakthrough infection from infectious adults"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.11" description="Gaining immunity"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.8" description="Maturation to adult"/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11" rateParameter="//@parameters.10" description="Gaining immunity"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.16" description="Breakthrough infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.16" description="Breakthrough infection from infectious adults"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11" rateParameter="//@parameters.10" description="Gaining immunity"/>
+  </compartments>
+  <compartments PrimaryName="Monitored Vaccinated" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.12" description="Gaining immunity"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.8" rateParameter="//@parameters.13" description="Progression to infectious"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.7" rateParameter="//@parameters.8" description="Maturation to adult"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.9" rateParameter="//@parameters.13" description="Progression to infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.7"

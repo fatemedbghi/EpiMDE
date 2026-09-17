@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <compartments PrimaryName="Susceptible">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.5"/>
+  </compartments>
+  <compartments PrimaryName="infectious_human">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.4"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.2"/>
+  </compartments>
+  <compartments PrimaryName="Recovered humans"/>
+  <compartments PrimaryName="Chollerae bacterial concentration"/>
+  <externalSinks name="Bacteria decay flow" rateParameter="//@parameters.3" sourceCompartment="//@compartments.3"/>
+  <parameters name="\u03b2" expression="0.00316" description="Constant influx" unit="1/days"/>
+  <parameters name="\u03ba" expression="3.16e5" description="Natural death rate Humans" unit="1cell/mL"/>
+  <parameters name="\u03be" expression="0.316" description="Natural death rate Mosquito" unit="1/time"/>
+  <parameters name="\u03b4" expression="0.04545" description="human infection rate" unit="days"/>
+  <parameters name="\u03b3" expression="0.11834 " description="Probability an exposed host becomes symptomatic" unit="days"/>
+  <parameters name="\u03b2 * \u03ba" type="EXPRESSION" expression="\u03b2 * \u03ba" description="Probability an exposed host becomes asymptomatic" unit="1/time"/>
+</compartmental:CompartmentalModel>

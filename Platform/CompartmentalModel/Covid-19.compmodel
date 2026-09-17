@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ASCII"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="1000000.0">
+  <compartments PrimaryName="Susceptible" population="900000.1">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="S to E" target="//@compartments.1" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.0"/>
+  </compartments>
+  <compartments PrimaryName="Exposed">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="E to I" target="//@compartments.2" rateParameter="//@parameters.1"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="99999.9">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="I to R" target="//@compartments.3" rateParameter="//@parameters.2"/>
+  </compartments>
+  <compartments PrimaryName="Recovered"/>
+  <parameters name="a" expression="0.2" description="Transmission rate"/>
+  <parameters name="b" expression="0.2" description="Incubation rate (1/incubation period)"/>
+  <parameters name="c" expression="0.1" description="Recovery rate (1/infectious period)"/>
+</compartmental:CompartmentalModel>

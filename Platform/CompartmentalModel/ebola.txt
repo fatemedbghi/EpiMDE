@@ -1,0 +1,6 @@
+Quarantined: dQuarantined/dt = + δ3 * Infected + Π2 * 0.0 - τ1 * Quarantined - τ2 * Quarantined - η2 * Quarantined - μ * Quarantined 
+Recovered: dRecovered/dt = + τ1 * Quarantined - μ * Recovered 
+Pathogens: dPathogens/dt = + η1 * Infected + η2 * Quarantined + η3 * Deceased - ξ * Pathogens 
+Deceased: dDeceased/dt = + δ1 * Infected + τ2 * Quarantined - η3 * Deceased - σ * Deceased 
+Susceptible: dSusceptible/dt = + Π1 * 0.0 - (β1 * Susceptible * Infected / 0.0) - (β2 * Susceptible * Pathogens / 0.0) - (β3 * Susceptible * Deceased / 0.0) - μ * Susceptible 
+Infected: dInfected/dt = + (β1 * Susceptible * Infected / 0.0) + (β2 * Susceptible * Pathogens / 0.0) + (β3 * Susceptible * Deceased / 0.0) - δ1 * Infected - δ3 * Infected - η1 * Infected - μ * Infected - δ2 * Infected 

@@ -1,0 +1,6 @@
+Infectious (I1): dInfectious (I1)/dt = + σ * Exposed (E2) - γ * Infectious (I1) 
+Susceptible: dSusceptible/dt = - (β * Susceptible * Infectious (I1) / 5.455145E7) - (β * Susceptible * Infectious (I2) / 5.455145E7) 
+Removed: dRemoved/dt = + γ * Infectious (I2) 
+Exposed (E2): dExposed (E2)/dt = + σ * Exposed (E1) - σ * Exposed (E2) 
+Infectious (I2): dInfectious (I2)/dt = + γ * Infectious (I1) - γ * Infectious (I2) 
+Exposed (E1): dExposed (E1)/dt = + (β * Susceptible * Infectious (I1) / 5.455145E7) + (β * Susceptible * Infectious (I2) / 5.455145E7) - σ * Exposed (E1) 

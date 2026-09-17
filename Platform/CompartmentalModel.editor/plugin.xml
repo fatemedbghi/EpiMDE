@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated seir -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="compartmentalmodel.presentation.CompartmentalmodelModelWizardID"
+            name="%_UI_CompartmentalmodelModelWizard_label"
+            class="compartmentalmodel.presentation.CompartmentalmodelModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CompartmentalmodelModelFile.gif">
+         <description>%_UI_CompartmentalmodelModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated seir -->
+      <editor
+            id="compartmentalmodel.presentation.CompartmentalmodelEditorID"
+            name="%_UI_CompartmentalmodelEditor_label"
+            icon="icons/full/obj16/CompartmentalmodelModelFile.gif"
+            extensions="compmodel"
+            class="compartmentalmodel.presentation.CompartmentalmodelEditor"
+            contributorClass="compartmentalmodel.presentation.CompartmentalmodelActionBarContributor">
+      </editor>
+   </extension>
+
+   <!-- ============================================================
+        LLM Pipeline Integration Commands
+        ============================================================ -->
+   <extension point="org.eclipse.ui.commands">
+      <category id="compartmental.editor.category"
+                name="EpiMDE LLM"/>
+      <command id="compartmental.editor.commands.generateFromPaper"
+               name="Build with LLM"
+               description="Build a compartmental model from a PDF paper using the LLM pipeline"
+               categoryId="compartmental.editor.category"/>
+      <command id="compartmental.editor.commands.editWithLLM"
+               name="Edit with LLM"
+               description="Request the LLM to edit the selected model element"
+               categoryId="compartmental.editor.category"/>
+      <command id="compartmental.editor.commands.explainError"
+               name="Explain Error"
+               description="Explain recent errors from the log using LLM"
+               categoryId="compartmental.editor.category"/>
+      <command id="compartmental.editor.commands.quickExplainError"
+               name="Quick Explain Error"
+               description="Explain recent errors from the log using faster LLM"
+               categoryId="compartmental.editor.category"/>
+      <command id="compartmental.editor.commands.explainElement"
+               name="Explain this Element"
+               description="Quickly explain the selected model element using fast LLM"
+               categoryId="compartmental.editor.category"/>
+      <command id="compartmental.editor.commands.explainElementContext"
+               name="Explain this Element (Context-Aware)"
+               description="Explain the selected model element using full history"
+               categoryId="compartmental.editor.category"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler commandId="compartmental.editor.commands.generateFromPaper"
+               class="compartmentalmodel.editor.actions.GenerateFromPaperHandler"/>
+      <handler commandId="compartmental.editor.commands.editWithLLM"
+               class="compartmentalmodel.editor.actions.EditWithLLMHandler"/>
+      <handler commandId="compartmental.editor.commands.explainError"
+               class="compartmentalmodel.editor.actions.ExplainErrorHandler"/>
+      <handler commandId="compartmental.editor.commands.quickExplainError"
+               class="compartmentalmodel.editor.actions.ExplainErrorHandler"/>
+      <handler commandId="compartmental.editor.commands.explainElement"
+               class="compartmentalmodel.editor.actions.ExplainElementHandler"/>
+      <handler commandId="compartmental.editor.commands.explainElementContext"
+               class="compartmentalmodel.editor.actions.ExplainElementContextHandler"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu id="compartmentalMenu"
+               label="EpiMDE">
+            <command commandId="compartmental.editor.commands.generateFromPaper"
+                     label="Build with LLM"
+                     mnemonic="B">
+            </command>
+            <command commandId="compartmental.editor.commands.explainError"
+                     label="Explain Error"
+                     mnemonic="E">
+            </command>
+            <command commandId="compartmental.editor.commands.quickExplainError"
+                     label="Quick Explain Error"
+                     mnemonic="Q">
+            </command>
+         </menu>
+      </menuContribution>
+      
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar id="compartmentalToolbar">
+            <command commandId="compartmental.editor.commands.generateFromPaper"
+                     label="Build with LLM"
+                     tooltip="Build a new compartmental model from a PDF using LLM"
+                     icon="icons/full/obj16/CompartmentalmodelModelFile.gif"
+                     style="push">
+            </command>
+            <command commandId="compartmental.editor.commands.explainError"
+                     label="Explain Error"
+                     tooltip="Explain recent errors with AI"
+                     style="push">
+            </command>
+            <command commandId="compartmental.editor.commands.quickExplainError"
+                     label="Quick Explain Error"
+                     tooltip="Quick explain recent errors with fast AI"
+                     style="push">
+            </command>
+         </toolbar>
+      </menuContribution>
+      
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command commandId="compartmental.editor.commands.editWithLLM"
+                  label="Edit with LLM"
+                  style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="selection">
+                  <count value="+"/>
+               </with>
+            </visibleWhen>
+         </command>
+         <command commandId="compartmental.editor.commands.explainElement"
+                  label="Explain this Element"
+                  style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="selection">
+                  <count value="+"/>
+               </with>
+            </visibleWhen>
+         </command>
+         <command commandId="compartmental.editor.commands.explainElementContext"
+                  label="Explain this Element (Context-Aware)"
+                  style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="selection">
+                  <count value="+"/>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

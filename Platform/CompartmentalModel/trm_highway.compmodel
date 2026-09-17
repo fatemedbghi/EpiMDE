@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Traffic Reaction Model (TRM) - Highway Simulation
+    Based on Pereira et al. (2024): "The Traffic Reaction Model: A kinetic
+    compartmental approach to road traffic modeling"
+
+    This model demonstrates:
+    - TRM with Godunov decomposition (CTM-equivalent)
+    - Dual variable tracking: ρ (vehicle density) and ν (free space density)
+    - Kinetic interpretation: traffic as chemical reactions
+    - Highway discretized into 5 cells (road segments)
+
+    Key concepts:
+    - Flux decomposition: f(ρ) = g(ρ, ρ_max - ρ)
+    - Numerical flux: F(ρ_i, ρ_{i+1}) = g(ρ_i, ρ_max - ρ_{i+1})
+    - Kinetic reaction: N_{i-1} + S_i → N_i + S_{i-1}
+    - TRM dynamics: ρ̇_i = (1/Δx)[F(ρ_{i-1}, ρ_i) - F(ρ_i, ρ_{i+1})]
+  -->
+
+  <!-- Network Parameters -->
+
+  <!-- Cell length (Δx) -->
+  <parameters name="Δx" type="CONSTANT" expression="1.0" description="Cell length (road segment length)" unit="km"/>
+
+  <!-- Maximum density (jam density) -->
+  <parameters name="ρ_max" type="CONSTANT" expression="180" description="Maximum density (jam density)" unit="veh/km"/>
+
+  <!-- Critical density (density at maximum flow) -->
+  <parameters name="ρ_crit" type="CONSTANT" expression="30" description="Critical density" unit="veh/km"/>
+
+  <!-- Maximum flow rate -->
+  <parameters name="Φ_max" type="CONSTANT" expression="2000" description="Maximum flow rate" unit="veh/hour"/>
+
+  <!-- Reaction rate constant for MAK decomposition -->
+  <parameters name="ω" type="CONSTANT" expression="0.444" description="Reaction rate constant (ω = Φ_max / (ρ_crit * (ρ_max - ρ_crit)))" unit="1/(veh·hour)"/>
+
+  <!-- Capacity drop factor for Extended TRM -->
+  <parameters name="C" type="CONSTANT" expression="0.75" description="Capacity drop factor for incident zone (25% capacity reduction)" unit="dimensionless"/>
+
+  <!-- Cell 0 (upstream) -->
+  <compartments PrimaryName="Cell0" SecondaryName="Upstream" population="80" junctionRule="NONE">
+    <!--
+      First cell with TRIANGULAR decomposition (equivalent to TRM Godunov/CTM)
+      Initial density: 80 veh/km (above critical density)
+    -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                    maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+
+    <!-- Flow to Cell 1 (routing coefficient = 1.0) -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="1.0"
+                   description="Traffic flow from Cell 0 to Cell 1"
+                   target="//@compartments.1"/>
+  </compartments>
+
+  <!-- Cell 1 -->
+  <compartments PrimaryName="Cell1" SecondaryName="Segment" population="60" junctionRule="NONE">
+    <!--
+      Internal cell with TRIANGULAR decomposition
+      Initial density: 60 veh/km
+    -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                    maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+
+    <!-- Flow to Cell 2 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="1.0"
+                   description="Traffic flow from Cell 1 to Cell 2"
+                   target="//@compartments.2"/>
+  </compartments>
+
+  <!-- Cell 2 (with MAK decomposition for comparison) -->
+  <compartments PrimaryName="Cell2" SecondaryName="MAK_Segment" population="40" junctionRule="NONE">
+    <!--
+      Internal cell with MAK decomposition
+      Demonstrates kinetic interpretation with reaction rate ω (from parameters)
+      Initial density: 40 veh/km
+    -->
+    <supplyFunction type="TRM_MAK" isSourceNode="false"
+                    maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+
+    <!-- Flow to Cell 3 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="1.0"
+                   description="Traffic flow from Cell 2 to Cell 3"
+                   target="//@compartments.3"/>
+  </compartments>
+
+  <!-- Cell 3 (Extended TRM with capacity drop) -->
+  <compartments PrimaryName="Cell3" SecondaryName="Incident_Zone" population="90" junctionRule="NONE">
+    <!--
+      Incident zone with reduced capacity
+      Uses parameter C = 0.75 for 25% capacity reduction
+      Initial density: 90 veh/km (congested due to incident)
+    -->
+    <supplyFunction type="TRM_CAPACITATED" isSourceNode="false"
+                    maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+
+    <!-- Flow to Cell 4 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rate="1.0"
+                   description="Traffic flow from Cell 3 to Cell 4"
+                   target="//@compartments.4"/>
+  </compartments>
+
+  <!-- Cell 4 (downstream, exit) -->
+  <compartments PrimaryName="Cell4" SecondaryName="Downstream" population="20" junctionRule="NONE">
+    <!--
+      Last cell (exit to sink)
+      Initial density: 20 veh/km (free-flow)
+      No outgoing flows - vehicles exit the highway
+    -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                    maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+  </compartments>
+
+</compartmental:CompartmentalModel>

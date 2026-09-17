@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="362796">
+  <compartments PrimaryName="Susceptible" population="363613" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Transmission from infected homosexual men" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="0.09636435643564358">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.09636435643564358"/>
+      <stratumSpecificRates stratum="Women" rate="0.0011263366336633665"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.007821782178217822"/>
+    </outgoingFlows>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Transmission from infected women" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="2.526315789473684E-6">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.0"/>
+      <stratumSpecificRates stratum="Women" rate="0.0"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="2.526315789473684E-6"/>
+    </outgoingFlows>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Transmission from infected heterosexual men" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="1.355124355907057E-5">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.0"/>
+      <stratumSpecificRates stratum="Women" rate="1.355124355907057E-5"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.0"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="114" SecondaryName="Untreated Infected" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Initial treatment of infected individuals" target="//@compartments.2" rate="0.29997">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.29997"/>
+      <stratumSpecificRates stratum="Women" rate="0.29997"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.29997"/>
+    </outgoingFlows>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Progression to AIDS for untreated individuals" target="//@compartments.3" rate="0.03333">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.03333"/>
+      <stratumSpecificRates stratum="Women" rate="0.03333"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.03333"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="Treated" population="107" SecondaryName="with ART" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Progression to AIDS for treated individuals" target="//@compartments.3" rate="0.018">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.018"/>
+      <stratumSpecificRates stratum="Women" rate="0.018"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.018"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="47" SecondaryName="living with AIDS" product="//@products.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Death from AIDS" target="//@compartments.4" rate="0.3333">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.3333"/>
+      <stratumSpecificRates stratum="Women" rate="0.3333"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.3333"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="HIV Deaths" population="0" product="//@products.0"/>
+  <externalSources name="Recruitment of Homosexual Men" rate="12.7872" targetCompartment="//@compartments.0" targetStratum="Homosexual Men"/>
+  <externalSources name="Recruitment of Women" rate="173.16" targetCompartment="//@compartments.0" targetStratum="Women"/>
+  <externalSources name="Recruitment of Heterosexual Men" rate="147.0528" targetCompartment="//@compartments.0" targetStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from Susceptible (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Homosexual Men"/>
+  <externalSinks name="Natural Death from Susceptible (Women)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Women"/>
+  <externalSinks name="Natural Death from Susceptible (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from Untreated Infected (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Homosexual Men"/>
+  <externalSinks name="Natural Death from Untreated Infected (Women)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Women"/>
+  <externalSinks name="Natural Death from Untreated Infected (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from Treated (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Homosexual Men"/>
+  <externalSinks name="Natural Death from Treated (Women)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Women"/>
+  <externalSinks name="Natural Death from Treated (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Heterosexual Men"/>
+  <externalSinks name="Natural Death from AIDS (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Homosexual Men"/>
+  <externalSinks name="Natural Death from AIDS (Women)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Women"/>
+  <externalSinks name="Natural Death from AIDS (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Heterosexual Men"/>
+  <!-- AIDS-induced deaths now flow to HIV Deaths compartment instead of death sinks -->
+  <groups name="SexualBehavior">
+    <values>Homosexual Men</values>
+    <values>Women</values>
+    <values>Heterosexual Men</values>
+  </groups>
+  <products name="SexualBehaviorProduct" description="Stratification by sexual behavior" groups="//@groups.0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,253 @@
+/**
+ */
+package compartmentalmodel;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.emf.common.util.Enumerator;
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the literals of the enumeration '<em><b>Parameter Type</b></em>',
+ * and utility methods for working with them.
+ * <!-- end-user-doc -->
+ * <!-- begin-model-doc -->
+ * Enumeration defining the three types of parameters supported by EpiMDE: CONSTANT (fixed named values), VARIABLE (simulation-time inputs), and EXPRESSION (computed from other parameters).
+ * <!-- end-model-doc -->
+ * @see compartmentalmodel.CompartmentalmodelPackage#getParameterType()
+ * @model
+ * @generated
+ */
+public enum ParameterType implements Enumerator {
+	/**
+	 * The '<em><b>CONSTANT</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Fixed value with a name, used for model parameters that don't change during simulation (e.g., natural death rate μₕ = 0.001384).
+	 * <!-- end-model-doc -->
+	 * @see #CONSTANT_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	CONSTANT(0, "CONSTANT", "CONSTANT"),
+
+	/**
+	 * The '<em><b>VARIABLE</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Placeholder for values provided at simulation time, such as environmental conditions (temperature T, rainfall R) or intervention levels.
+	 * <!-- end-model-doc -->
+	 * @see #VARIABLE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	VARIABLE(1, "VARIABLE", "VARIABLE"),
+
+	/**
+	 * The '<em><b>EXPRESSION</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Computed value defined as a mathematical expression referencing other parameters and/or compartments (e.g., β₂a(T) = β₂ * a(T), or μₕ+δ = μₕ + 0.017325).
+	 * <!-- end-model-doc -->
+	 * @see #EXPRESSION_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	EXPRESSION(2, "EXPRESSION", "EXPRESSION");
+
+	/**
+	 * The '<em><b>CONSTANT</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Fixed value with a name, used for model parameters that don't change during simulation (e.g., natural death rate μₕ = 0.001384).
+	 * <!-- end-model-doc -->
+	 * @see #CONSTANT
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int CONSTANT_VALUE = 0;
+
+	/**
+	 * The '<em><b>VARIABLE</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Placeholder for values provided at simulation time, such as environmental conditions (temperature T, rainfall R) or intervention levels.
+	 * <!-- end-model-doc -->
+	 * @see #VARIABLE
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int VARIABLE_VALUE = 1;
+
+	/**
+	 * The '<em><b>EXPRESSION</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Computed value defined as a mathematical expression referencing other parameters and/or compartments (e.g., β₂a(T) = β₂ * a(T), or μₕ+δ = μₕ + 0.017325).
+	 * <!-- end-model-doc -->
+	 * @see #EXPRESSION
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EXPRESSION_VALUE = 2;
+
+	/**
+	 * An array of all the '<em><b>Parameter Type</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static final ParameterType[] VALUES_ARRAY =
+		new ParameterType[] {
+			CONSTANT,
+			VARIABLE,
+			EXPRESSION,
+		};
+
+	/**
+	 * A public read-only list of all the '<em><b>Parameter Type</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static final List<ParameterType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
+	/**
+	 * Returns the '<em><b>Parameter Type</b></em>' literal with the specified literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param literal the literal.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
+	public static ParameterType get(String literal) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			ParameterType result = VALUES_ARRAY[i];
+			if (result.toString().equals(literal)) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the '<em><b>Parameter Type</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
+	public static ParameterType getByName(String name) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			ParameterType result = VALUES_ARRAY[i];
+			if (result.getName().equals(name)) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the '<em><b>Parameter Type</b></em>' literal with the specified integer value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the integer value.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
+	public static ParameterType get(int value) {
+		switch (value) {
+			case CONSTANT_VALUE: return CONSTANT;
+			case VARIABLE_VALUE: return VARIABLE;
+			case EXPRESSION_VALUE: return EXPRESSION;
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final int value;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String name;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String literal;
+
+	/**
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private ParameterType(int value, String name, String literal) {
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int getValue() {
+	  return value;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getName() {
+	  return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getLiteral() {
+	  return literal;
+	}
+
+	/**
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		return literal;
+	}
+	
+} //ParameterType

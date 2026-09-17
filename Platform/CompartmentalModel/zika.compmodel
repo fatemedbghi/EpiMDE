@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="16331365">
+  <compartments PrimaryName="Susceptible humans" population="16231364"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.9"  contactRateParameter="//@parameters.0"/>
+  	</compartments>
+
+    <compartments PrimaryName="Exposed humans" population="0">  
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2"  rateParameter="//@parameters.1"/>
+  	</compartments>
+  
+    <compartments PrimaryName="Infectious humans" population="1"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3"  rateParameter="//@parameters.2"/>
+  	</compartments>
+    <compartments PrimaryName="Recovered humans" population="0" />   
+
+
+    <compartments PrimaryName="Eggs(non-infectious)" population="180000000"> 
+      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.3"/>
+  	</compartments>
+
+    <compartments PrimaryName="Larvae (non-infectious, logistic)" population="90000000">  
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.6"  rateParameter="//@parameters.4"/>
+  	</compartments>
+  
+    <compartments PrimaryName="Pupae (non-infectious)" population="70000000"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.7"  rateParameter="//@parameters.17"/>
+  	</compartments>
+    <compartments PrimaryName="Susceptible female adults" population="69999990"> 
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.8" contactCompartment="//@compartments.2"  contactRateParameter="//@parameters.6"/>
+    </compartments>
+    <compartments PrimaryName="Exposed female adults" population="5"> 
+      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.9"  rateParameter="//@parameters.7"/>
+    </compartments>
+    <compartments PrimaryName="Infectious female adults" population="5" /> 
+
+    <externalSources name="Logistic human births" rateParameter="//@parameters.8" targetCompartment="//@compartments.0"/>
+    <externalSources name="Logistic human births" rateParameter="//@parameters.8" targetCompartment="//@compartments.1"/>
+    <externalSources name="Logistic human births" rateParameter="//@parameters.8" targetCompartment="//@compartments.2"/>
+    <externalSources name="Logistic human births" rateParameter="//@parameters.8" targetCompartment="//@compartments.3"/>
+
+    <externalSources name="Egg-laying from Female Adult Vectors" rateParameter="//@parameters.10" targetCompartment="//@compartments.4"/>
+
+    
+    <externalSinks name="Natural_Death_Sh" rateParameter="//@parameters.9" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Natural_Death_Eh" rateParameter="//@parameters.9" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Natural_Death_Ih" rateParameter="//@parameters.9" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Natural_Death_Rh" rateParameter="//@parameters.9" sourceCompartment="//@compartments.3"/>
+
+    <externalSinks name="Natural_Death_E" rateParameter="//@parameters.11" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Natural_Death_L" rateParameter="//@parameters.12" sourceCompartment="//@compartments.5"/>
+    <externalSinks name="Density-dependence_sink_L" rateParameter="//@parameters.13" sourceCompartment="//@compartments.5"/>
+    <externalSinks name="Natural_Death_P" rateParameter="//@parameters.14" sourceCompartment="//@compartments.6"/>
+
+    <externalSinks name="Natural_Death_Sv" rateParameter="//@parameters.15" sourceCompartment="//@compartments.7"/>
+    <externalSinks name="Natural_Death_Ev" rateParameter="//@parameters.15" sourceCompartment="//@compartments.8"/>
+    <externalSinks name="Natural_Death_Iv" rateParameter="//@parameters.15" sourceCompartment="//@compartments.9"/>
+
+    
+
+
+
+    <parameters name="b" expression="0.071" description="Infectious mosquito bites to humans" unit="1/day"/> 
+    <parameters name="1/τ_h" expression="0.5" description="Inverse human incubation" unit="1/day"/> 
+    <parameters name="γ_h" expression="0.2" description="Human recovery rate" unit="1/day"/> 
+
+    <parameters name="1/τ1_v" expression="0.3" description="Egg development rate" unit="1/day"/> 
+    <parameters name="1/τ2_v" expression="0.1" description="Larval development rate" unit="1/day"/> 
+    <parameters name="τ3_v" expression="0.3" description="Pupal development rate" unit="1/day"/> 
+  
+    <parameters name="b_v" expression="0.001" description="Female mosquito bites on infectious humans" unit="1/day"/> 
+    <parameters name="1/τ_v" expression="0.125" description="Inverse vector incubation" unit="1/day"/> 
+
+    <parameters name="r_h" expression="0.00005" description="Human growth rate" unit="1/day"/> 
+    <parameters name="μ_h" expression="1.94e-5" description="Natural human mortality" unit="1/day"/> 
+
+    <parameters name="f" expression="80" description="Egg-laying birth" unit="1/day"/> 
+
+    <parameters name="μ1_v" expression="0.05" description="Egg death rate" unit="1/day"/> 
+    <parameters name="μ2_v" expression="0.025" description="Base larval death" unit="1/day"/> 
+    <parameters name="δ_l" expression="1" description="Density mortality coeff" unit="1/day"/> 
+    <parameters name="μ3_v" expression="0.0025" description="Pupal death rate" unit="1/day"/> 
+    <parameters name="μ_a_v" expression="0.05" description="Female adult death rate" unit="1/day"/> 
+    <parameters name="φ" expression="0.68" description="Female fraction" unit="1/day"/> 
+
+    <parameters name="φ * τ3_v" type="EXPRESSION" expression="φ * τ3_v" description="Combined contact rate" unit="1/time"/> 
+
+
+
+     
+    
+ 
+
+
+</compartmental:CompartmentalModel>

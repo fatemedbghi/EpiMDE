@@ -1,0 +1,4 @@
+Recovered: dRecovered/dt = + γ * Infected - (α * π * Recovered * Infected / 0.0) - η * Recovered - μ * Recovered 
+Vaccinated: dVaccinated/dt = + θ * Susceptible - δ * Vaccinated - μ * Vaccinated 
+Susceptible: dSusceptible/dt = + δ * Vaccinated + η * Recovered + Λ * 0.0 - (π * Susceptible * Infected / 0.0) - θ * Susceptible - μ * Susceptible 
+Infected: dInfected/dt = + (π * Susceptible * Infected / 0.0) + (α * π * Recovered * Infected / 0.0) - γ * Infected - μ * Infected 

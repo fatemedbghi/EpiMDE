@@ -1,0 +1,7 @@
+Asymptomatic infectious humans: dAsymptomatic infectious humans/dt = + (1-σ) * k * Exposed humans - (ρ * ha * Asymptomatic infectious humans * Infectious mosquitoes / 0.0) - γ2a * Asymptomatic infectious humans - μh * Asymptomatic infectious humans 
+Susceptible humans: dSusceptible humans/dt = + B * 0.0 - (ha * Susceptible humans * Infectious mosquitoes / 0.0) - μh * Susceptible humans 
+Infectious mosquitoes: dInfectious mosquitoes/dt = + (va * Susceptible mosquitoes * Asymptomatic infectious humans / 0.0) + (va * Susceptible mosquitoes * Symptomatic infectious humans / 0.0) - μv * Infectious mosquitoes 
+Recovered humans: dRecovered humans/dt = + γ2a * Asymptomatic infectious humans + γ1a * Symptomatic infectious humans - μh * Recovered humans 
+Exposed humans: dExposed humans/dt = + (ha * Susceptible humans * Infectious mosquitoes / 0.0) - σ * k * Exposed humans - (1-σ) * k * Exposed humans - μh * Exposed humans 
+Susceptible mosquitoes: dSusceptible mosquitoes/dt = - (va * Susceptible mosquitoes * Asymptomatic infectious humans / 0.0) - (va * Susceptible mosquitoes * Symptomatic infectious humans / 0.0) - μv * Susceptible mosquitoes 
+Symptomatic infectious humans: dSymptomatic infectious humans/dt = + σ * k * Exposed humans + (ρ * ha * Asymptomatic infectious humans * Infectious mosquitoes / 0.0) - γ1a * Symptomatic infectious humans - μh * Symptomatic infectious humans 

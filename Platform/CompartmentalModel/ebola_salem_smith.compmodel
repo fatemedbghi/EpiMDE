@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="1000">
+  <compartments PrimaryName="Susceptible" SecondaryName="S" population="999.0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.3"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.4"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="E" population="0.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.5"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="I" population="1.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.7"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4" rateParameter="//@parameters.6"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" SecondaryName="R" population="0.0"/>
+  <compartments PrimaryName="InfectiousDeceased" SecondaryName="D_I" population="0.0"/>
+  <externalSources name="Birth_Immigration" rateParameter="//@parameters.10" targetCompartment="//@compartments.0"/>
+  <externalSinks name="Natural_Death_S" rateParameter="//@parameters.9" sourceCompartment="//@compartments.0"/>
+  <externalSinks name="Natural_Death_E" rateParameter="//@parameters.9" sourceCompartment="//@compartments.1"/>
+  <externalSinks name="Natural_Death_R" rateParameter="//@parameters.9" sourceCompartment="//@compartments.3"/>
+  <externalSinks name="Safe_Burial_Loss_Infectivity" rateParameter="//@parameters.8" sourceCompartment="//@compartments.4"/>
+  <parameters name="β" expression="0.75" description="Transmission probability (per contact)" unit="dimensionless"/>
+  <parameters name="c_I" expression="2.5" description="Contact rate with infectious individuals" unit="people/week"/>
+  <parameters name="c_D" expression="2.5" description="Contact rate with infectious dead bodies" unit="people/week"/>
+  <parameters name="βc_I" type="EXPRESSION" expression="β * c_I" description="Combined transmission rate from living infectious" unit="1/week"/>
+  <parameters name="βc_D" type="EXPRESSION" expression="β * c_D" description="Combined transmission rate from infectious dead" unit="1/week"/>
+  <parameters name="ω" expression="1.0" description="Rate of becoming infectious (1/incubation period)" unit="1/week"/>
+  <parameters name="α" expression="0.5" description="Disease death rate (death from Ebola)" unit="1/week"/>
+  <parameters name="γ" expression="0.5" description="Recovery rate" unit="1/week"/>
+  <parameters name="θ" expression="1.0" description="Safe burial rate (rate dead bodies lose infectivity)" unit="1/week"/>
+  <parameters name="μ" expression="0.00038461" description="Background death rate (1/50 years = 1/(50×52) weeks)" unit="1/week"/>
+  <parameters name="Λ" expression="0.38461" description="Birth/immigration rate (1000 × μ for stable population)" unit="people/week"/>
+</compartmental:CompartmentalModel>

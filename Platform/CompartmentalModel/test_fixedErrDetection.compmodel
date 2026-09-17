@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="82112.0">
+    <parameters name="L" type="CONSTANT" expression="21.909" description="Recruitment rate to children group" unit="per week"/>
+    <parameters name="x_U" type="CONSTANT" expression="0.087" description="Un-monitored children Vaccination rate" unit="per week"/>
+    <parameters name="x_M" type="CONSTANT" expression="4.77E-5" description="Monitored children Vaccination rate" unit="per week"/>
+    <parameters name="x_A" type="CONSTANT" expression="0.0" description="Adult Vaccination rate" unit="per week"/>
+    <parameters name="b_C" type="CONSTANT" expression="0.00188" description="Transmission rate on the children" unit="per week"/>
+    <parameters name="b_A" type="CONSTANT" expression="1.00E-5" description="Transmission rate on the adults" unit="per week"/>
+    <parameters name="m" type="CONSTANT" expression="0.

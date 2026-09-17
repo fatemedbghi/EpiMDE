@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated compartmental -->
+      <package
+            uri="http://example.com/compartmentalmodel"
+            class="compartmentalmodel.CompartmentalmodelPackage"
+            genModel="compartmental.genmodel"/>
+   </extension>
+
+</plugin>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Traffic Network Model based on Coogan & Arcak 2015:
+    "A Compartmental Model for Traffic Networks and its Dynamical Behavior"
+
+    This model implements Example 2 from the paper (Figure 3):
+    - 2 onramps (links 1, 4)
+    - 3 ordinary links (links 2, 3, 5)
+    - Network topology: v1 -> (v2, v3), v4 merges with both
+
+    Key concepts:
+    - Compartments represent road links with vehicle density ρ_l
+    - Supply function Φ^in_l(ρ): decreasing, capacity constraint
+    - Demand function Φ^out_l(ρ): increasing, traffic wanting to flow
+    - PP/FIFO rule at junctions with split ratios β_lk
+    - Dynamics: ρ̇_l = f^in_l - f^out_l for ordinary links
+    -           ρ̇_l = d_l - f^out_l for onramps
+  -->
+
+  <!-- Link Type Groups -->
+  <groups name="LinkType" description="Type of traffic link">
+    <values>Onramp</values>
+    <values>Ordinary</values>
+  </groups>
+
+  <!-- Network Parameters -->
+
+  <!-- Jam densities for ordinary links (vehicles per unit length) -->
+  <parameters name="ρ_jam_2" type="CONSTANT" expression="360" description="Jam density for link 2" unit="vehicles"/>
+  <parameters name="ρ_jam_3" type="CONSTANT" expression="360" description="Jam density for link 3" unit="vehicles"/>
+  <parameters name="ρ_jam_5" type="CONSTANT" expression="360" description="Jam density for link 5" unit="vehicles"/>
+
+  <!-- Critical densities (where demand = supply) -->
+  <parameters name="ρ_crit_2" type="CONSTANT" expression="90" description="Critical density for link 2" unit="vehicles"/>
+  <parameters name="ρ_crit_3" type="CONSTANT" expression="90" description="Critical density for link 3" unit="vehicles"/>
+  <parameters name="ρ_crit_5" type="CONSTANT" expression="90" description="Critical density for link 5" unit="vehicles"/>
+
+  <!-- Critical flows (maximum throughput) -->
+  <parameters name="Φ_crit_2" type="CONSTANT" expression="3000" description="Critical flow for link 2" unit="vehicles/hour"/>
+  <parameters name="Φ_crit_3" type="CONSTANT" expression="3000" description="Critical flow for link 3" unit="vehicles/hour"/>
+  <parameters name="Φ_crit_5" type="CONSTANT" expression="4000" description="Critical flow for link 5" unit="vehicles/hour"/>
+
+  <!-- Maximum demand for onramps -->
+  <parameters name="Φ_max_1" type="CONSTANT" expression="3000" description="Maximum demand for onramp 1" unit="vehicles/hour"/>
+  <parameters name="Φ_max_4" type="CONSTANT" expression="6000" description="Maximum demand for onramp 4" unit="vehicles/hour"/>
+
+  <!-- Split ratios β_lk (fraction of flow from link l to link k) -->
+  <parameters name="β_12" type="CONSTANT" expression="0.5" description="Split ratio: link 1 to link 2" unit="dimensionless"/>
+  <parameters name="β_13" type="CONSTANT" expression="0.5" description="Split ratio: link 1 to link 3" unit="dimensionless"/>
+  <parameters name="β_25" type="CONSTANT" expression="1.0" description="Split ratio: link 2 to link 5" unit="dimensionless"/>
+  <parameters name="β_35" type="CONSTANT" expression="1.0" description="Split ratio: link 3 to link 5" unit="dimensionless"/>
+  <parameters name="β_45" type="CONSTANT" expression="1.0" description="Split ratio: link 4 to link 5" unit="dimensionless"/>
+
+  <!-- Input flows d_l for onramps (constant demand) -->
+  <parameters name="d_1" type="CONSTANT" expression="2500" description="Input demand for onramp 1" unit="vehicles/hour"/>
+  <parameters name="d_4" type="CONSTANT" expression="2500" description="Input demand for onramp 4" unit="vehicles/hour"/>
+
+  <!-- Onramp 1 (Entry point at junction v1) -->
+  <compartments PrimaryName="Onramp1" SecondaryName="Link 1" population="0" junctionRule="PPFIFO">
+    <!--
+      Onramps act as queues with unbounded density: ρ_1 ∈ [0, ∞)
+      Demand: Φ^out_1(ρ) = min{max{ρ_1, Φ_max_1}, Φ_max_1}
+      Dynamics: ρ̇_1 = d_1 - f^out_1(ρ)
+
+      Flows to links 2 and 3 via split ratios at junction v1
+    -->
+    <!-- Supply function for onramp -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="true" maxDemand="3000"/>
+
+    <!-- Flow to Link 2 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rateParameter="//@parameters.10"
+                   description="Traffic flow from Onramp 1 to Link 2 (split ratio β_12 = 0.5)"
+                   target="//@compartments.1"/>
+
+    <!-- Flow to Link 3 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rateParameter="//@parameters.11"
+                   description="Traffic flow from Onramp 1 to Link 3 (split ratio β_13 = 0.5)"
+                   target="//@compartments.2"/>
+  </compartments>
+
+  <!-- Ordinary Link 2 (From v1 to v2) -->
+  <compartments PrimaryName="Link2" SecondaryName="Ordinary" population="37.5" junctionRule="PPFIFO">
+    <!--
+      Ordinary link with bounded density: ρ_2 ∈ [0, ρ_jam_2]
+      Demand: Φ^out_2(ρ) = min{ρ_2 * (Φ_crit_2 / ρ_crit_2), Φ_crit_2} for ρ ≤ ρ_crit
+      Supply: Φ^in_2(ρ) = min{(ρ_jam_2 - ρ_2) * (Φ_crit_2 / (ρ_jam_2 - ρ_crit_2)), Φ_crit_2}
+      Dynamics: ρ̇_2 = f^in_2(ρ) - f^out_2(ρ)
+
+      Initial density: 37.5 (from paper Example 2 equilibrium with ramp metering)
+    -->
+    <!-- Supply function for ordinary link -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                    maxDensity="360" criticalDensity="90" maxThroughput="3000"/>
+
+    <!-- Flow to Link 5 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rateParameter="//@parameters.12"
+                   description="Traffic flow from Link 2 to Link 5 (split ratio β_25 = 1.0)"
+                   target="//@compartments.4"/>
+  </compartments>
+
+  <!-- Ordinary Link 3 (From v1 to v3) -->
+  <compartments PrimaryName="Link3" SecondaryName="Ordinary" population="37.5" junctionRule="PPFIFO">
+    <!--
+      Similar to Link 2
+      Initial density: 37.5 (from paper Example 2 equilibrium with ramp metering)
+    -->
+    <!-- Supply function for ordinary link -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                    maxDensity="360" criticalDensity="90" maxThroughput="3000"/>
+
+    <!-- Flow to Link 5 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rateParameter="//@parameters.13"
+                   description="Traffic flow from Link 3 to Link 5 (split ratio β_35 = 1.0)"
+                   target="//@compartments.4"/>
+  </compartments>
+
+  <!-- Onramp 4 (Entry point at junction v4) -->
+  <compartments PrimaryName="Onramp4" SecondaryName="Link 4" population="0" junctionRule="PPFIFO">
+    <!--
+      Second onramp merging with link 5
+      In the ramp metering scenario, this onramp is metered to m_4 = 1750
+    -->
+    <!-- Supply function for onramp -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="true" maxDemand="6000"/>
+
+    <!-- Flow to Link 5 -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+                   rateParameter="//@parameters.14"
+                   description="Traffic flow from Onramp 4 to Link 5 (split ratio β_45 = 1.0)"
+                   target="//@compartments.4"/>
+  </compartments>
+
+  <!-- Ordinary Link 5 (Exit link to v_sink) -->
+  <compartments PrimaryName="Link5" SecondaryName="Ordinary" population="90" junctionRule="NONE">
+    <!--
+      Final link leading to network sink
+      No outgoing flows - vehicles exit the network
+      Initial density: 90 = ρ_crit_5 (from paper Example 2 equilibrium)
+    -->
+    <!-- Supply function for ordinary link -->
+    <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                    maxDensity="360" criticalDensity="90" maxThroughput="4000"/>
+  </compartments>
+
+  <!-- Birth Sources: Exogenous input flows to onramps -->
+  <externalSources name="Demand at Onramp 1"
+                rateParameter="//@parameters.15"
+                targetCompartment="//@compartments.0"
+                fixedRate="true"/>
+
+  <externalSources name="Demand at Onramp 4"
+                rateParameter="//@parameters.16"
+                targetCompartment="//@compartments.3"
+                fixedRate="true"/>
+
+</compartmental:CompartmentalModel>

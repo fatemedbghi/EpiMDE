@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="." type="CONSTANT"/>
+  <parameters name="α" expression="0." type="CONSTANT"/>
+  <parameters name="n" expression="0" type="CONSTANT"/>
+  <parameters name="γ" expression="0.5" type="CONSTANT" description="recovery rate" unit="weeks⁻¹"/>
+  <parameters name="μ" expression="1/50" type="CONSTANT" description="background death rate" unit="years⁻¹"/>
+  <parameters name="Λ" expression="1000μ" type="CONSTANT" description="birth rate" unit="people years⁻¹"/>
+  <parameters name="θ" expression="1" type="CONSTANT" description="safe burial rate" unit="weeks⁻¹"/>
+  <parameters name="c_I" expression="variable" type="CONSTANT" description="contact rate with infectious individuals" unit="people weeks⁻¹"/>
+  <parameters name="c_D" expression="variable" type="CONSTANT" description="contact rate with infectious dead bodies" unit="people weeks⁻¹"/>
+  <parameters name="ω" expression="1" type="CONSTANT" description="rate at which infected individuals become infectious" unit="weeks⁻¹"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.2" target="//@compartments.1" description="Susceptible individuals become non-symptomatic infected through contact with infected individuals or corpses."/>
+  </compartments>
+  <compartments PrimaryName="Non-Symptomatic Infected" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.2" description="Non-symptomatic infected individuals become infectious and symptomatic."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Infectious individuals recover from the disease."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.3" description="Infectious individuals may die from the disease and become infectious deceased."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Deceased" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.0" contactRateParameter="//@parameters.2" target="//@compartments.0" description="Infectious deceased individuals infect susceptible individuals."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <compartments PrimaryName="Susceptible"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.1"  contactRateParameter="//@parameters.5"/>
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.4"  contactRateParameter="//@parameters.6"/>
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.5"  contactRateParameter="//@parameters.7"/>
+  	</compartments>
+
+    <compartments PrimaryName="Infected"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.8"/>
+      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2"  rateParameter="//@parameters.10"/>
+      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.13"/>
+  	</compartments>
+
+    <compartments PrimaryName="Quarantined"> 
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3"  rateParameter="//@parameters.11"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.12"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.14"/>
+  	</compartments>
+  
+    <compartments PrimaryName="Recovered" /> 
+
+    <compartments PrimaryName="Pathogens" /> 
+
+    <compartments PrimaryName="Deceased" > 
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.15"/>
+    </compartments>
+
+    <externalSources name="Birth" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+    <externalSources name="Birth" rateParameter="//@parameters.1" targetCompartment="//@compartments.2"/>
+    
+    <externalSinks name="Natural_Death_S" rateParameter="//@parameters.2" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Natural_Death_I" rateParameter="//@parameters.2" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Natural_Death_Q" rateParameter="//@parameters.2" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Natural_Death_R" rateParameter="//@parameters.2" sourceCompartment="//@compartments.3"/>
+
+    <externalSinks name="Removal from Infected" rateParameter="//@parameters.9" sourceCompartment="//@compartments.1"/>
+    
+    <externalSinks name="Pathogens Decay" rateParameter="//@parameters.3" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Burial" rateParameter="//@parameters.4" sourceCompartment="//@compartments.5"/>
+
+    <parameters name="Π1" expression="10" description="Recuritment_S" unit="1/day"/> 
+    <parameters name="Π2" expression="15" description="Recuritment_I" unit="1/day"/> 
+    
+    <parameters name="μ" expression="0.04" description="Natural death rate" unit="1/day"/> 
+    
+    <parameters name="ξ" expression="0.1" description="clearance rate of pathogens" unit="1/day"/> 
+    <parameters name="σ" expression="0.1" description="removal rate of deceased" unit="1/day"/> 
+
+    <parameters name="β1" expression="0.0015" description="transmission rate from infected" unit="1/day"/>
+    <parameters name="β2" expression="0.006" description="transmission rate from pathogens" unit="1/day"/>
+    <parameters name="β3" expression="0.0012" description="transmission rate from deceased" unit="1/day"/>
+
+    <parameters name="δ1" expression="0.8" description="Disease-induced death rate" unit="1/day"/> 
+    <parameters name="δ2" expression="0.5" description="Removal rate from Infected" unit="1/day"/> 
+    <parameters name="δ3" expression="0.04" description="Quarantine rate" unit="1/day"/> 
+
+    <parameters name="τ1" expression="0.123" description="Disease-induced death rate" unit="1/day"/> 
+    <parameters name="τ2" expression="0.04" description="Removal rate from Infected" unit="1/day"/> 
+
+    <parameters name="η1" expression="0.04" description="Disease-induced death rate" unit="1/day"/> 
+    <parameters name="η2" expression="0.22" description="Removal rate from Infected" unit="1/day"/> 
+    <parameters name="η3" expression="0.12" description="Quarantine rate" unit="1/day"/> 
+    
+
+</compartmental:CompartmentalModel>

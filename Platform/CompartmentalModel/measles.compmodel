@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="82051">
+	<compartments PrimaryName="Susceptible children" population="2142"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.4"  contactRateParameter="//@parameters.2"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.10"  contactRateParameter="//@parameters.2"/> 
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.1"  rateParameter="//@parameters.0"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2"  rateParameter="//@parameters.1"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.6"  rateParameter="//@parameters.6"/>
+  	</compartments>
+    <compartments PrimaryName="Un-monitored vaccinated children" population="2382"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.4"  contactRateParameter="//@parameters.17"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.10"  contactRateParameter="//@parameters.17"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.9"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.7"  rateParameter="//@parameters.6"/>
+  	</compartments>
+    <compartments PrimaryName="Monitored vaccinated children" population="50"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.10"/>
+  	</compartments>
+    <compartments PrimaryName="Exposed children" population="5"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.11"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.9"  rateParameter="//@parameters.6"/>
+  	</compartments>
+    <compartments PrimaryName="Infectious children" population="2"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.5"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10"  rateParameter="//@parameters.6"/>
+  	</compartments>
+    <compartments PrimaryName="Immune children" population="19271"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11"  rateParameter="//@parameters.6"/>
+  	</compartments>
+    <compartments PrimaryName="Susceptible adults" population="6408"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.3"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.10" contactRateParameter="//@parameters.3"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.8"  rateParameter="//@parameters.13"/>
+  	</compartments>
+    <compartments PrimaryName="Un-monitored vaccinated adults" population="5703"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.18"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.10" contactRateParameter="//@parameters.18"/>
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11"  rateParameter="//@parameters.8"/>
+  	</compartments>
+    <compartments PrimaryName="Vaccinated Adults" population="0"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11"  rateParameter="//@parameters.8"/>
+  	</compartments>
+    <compartments PrimaryName="Exposed adults" population="3"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10"  rateParameter="//@parameters.11"/>
+  	</compartments>
+    <compartments PrimaryName="Infectious adults" population="1"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11"  rateParameter="//@parameters.5"/>
+  	</compartments>
+    <compartments PrimaryName="Immune adults" population="46145"/> 
+
+    <externalSources name="Birth" rateParameter="//@parameters.16" targetCompartment="//@compartments.0"/>
+
+    <externalSinks name="Natural_Death_SC" rateParameter="//@parameters.4" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Natural_Death_UVC" rateParameter="//@parameters.4" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Natural_Death_MVC" rateParameter="//@parameters.4" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Natural_Death_EC" rateParameter="//@parameters.4" sourceCompartment="//@compartments.3"/>
+    <externalSinks name="Natural_Death_ImC" rateParameter="//@parameters.4" sourceCompartment="//@compartments.5"/>
+    <externalSinks name="Natural_Death_SA" rateParameter="//@parameters.4" sourceCompartment="//@compartments.6"/>
+    <externalSinks name="Natural_Death_UVA" rateParameter="//@parameters.4" sourceCompartment="//@compartments.7"/>
+    <externalSinks name="Natural_Death_VA" rateParameter="//@parameters.4" sourceCompartment="//@compartments.8"/>
+    <externalSinks name="Natural_Death_EA" rateParameter="//@parameters.4" sourceCompartment="//@compartments.9"/>
+    <externalSinks name="Natural_Death_ImA" rateParameter="//@parameters.4" sourceCompartment="//@compartments.11"/>
+    <externalSinks name="Natural_Death_IC" rateParameter="//@parameters.4" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Natural_Death_IA" rateParameter="//@parameters.4" sourceCompartment="//@compartments.10"/>
+
+    <externalSinks name="Disease-induced_Death_IC" rateParameter="//@parameters.12" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Disease-induced_Death_IA" rateParameter="//@parameters.12" sourceCompartment="//@compartments.10"/>
+
+
+
+    <parameters name="ξU" expression="0.0087" description="un-monitored child vaccination rate" unit="1/week"/> 
+    <parameters name="ξM" expression="4.77e-5" description="monitored child vaccination rate" unit="1/week"/> 
+    <parameters name="βC" expression="0.00188" description="child transmission rate" unit="1/week"/> 
+    <parameters name="βA" expression="1.00e-5" description="adult transmission rate" unit="1/week"/> 
+    <parameters name="m" expression="2.68e-4" description="natural death rate" unit="1/week"/> 
+    <parameters name="γ" expression="0.5" description="recovery rate" unit="1/week"/> 
+    <parameters name="φ" expression="0.00128" description="maturation rate" unit="1/week"/> 
+    <parameters name="ε" expression="0.2" description="vaccine effectiveness" unit="1/week"/> 
+    <parameters name="ηA" expression="0" description="adult immunization rate" unit="1/week"/> 
+    <parameters name="ηU" expression="3e-6" description="un-monitored child immunization" unit="1/week"/> 
+    <parameters name="ηM" expression="0.0167" description="monitored child immunization" unit="1/week"/> 
+    <parameters name="δ" expression="0.7" description="incubation rate" unit="1/week"/> 
+    <parameters name="d" expression="9.34e-5" description="disease death rate" unit="1/week"/> 
+    <parameters name="ξA" expression="0" description="adult vaccination rate" unit="1/week"/> 
+    <parameters name="α" expression="0.01253" description="contact network fraction" unit="1/week"/> 
+    <parameters name="q" expression="0.15" description="case reporting fraction" unit="1/week"/> 
+    <parameters name="L" expression="0.02197" description="Birth Rate" unit="1/week"/> 
+ 
+    <parameters name="ε * βC" type="EXPRESSION" expression="ε * βC" description="" unit="1/week"/> 
+    <parameters name="ε * βA" type="EXPRESSION" expression="ε * βA" description="" unit="1/week"/> 
+
+
+</compartmental:CompartmentalModel>

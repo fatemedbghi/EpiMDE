@@ -1,0 +1,4 @@
+Infectious: dInfectious/dt = + (β * κ * Susceptible * Chollerae bacterial concentration / 0.0) - γ * Infectious - ξ * Infectious 
+Chollerae bacterial concentration: dChollerae bacterial concentration/dt = + ξ * Infectious - δ * Chollerae bacterial concentration 
+Susceptible: dSusceptible/dt = - (β * κ * Susceptible * Chollerae bacterial concentration / 0.0) 
+Recovered humans: dRecovered humans/dt = + γ * Infectious 

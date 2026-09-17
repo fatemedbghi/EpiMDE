@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/CompartmentalModel/src" modelPluginID="CompartmentalModel"
+    modelName="Compartmental" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="21.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>compartmental.ecore</foreignModel>
+  <genPackages prefix="Compartmentalmodel" disposableProviderFactory="true" ecorePackage="compartmental.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="compartmental.ecore#//ParameterType">
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//ParameterType/CONSTANT"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//ParameterType/VARIABLE"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//ParameterType/EXPRESSION"/>
+    </genEnums>
+    <genClasses ecoreClass="compartmental.ecore#//Compartment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/PrimaryName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/population"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//Compartment/outgoingFlows"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/SecondaryName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//Compartment/product"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="compartmental.ecore#//Flow">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Flow/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//Flow/target"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//RateFlow">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//RateFlow/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//RateFlow/rateParameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//RateFlow/stratumSpecificRates"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//ContactFlow">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ContactFlow/contactCompartment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ContactFlow/contactRate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ContactFlow/contactRateParameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ContactFlow/contactParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//ContactFlow/stratumSpecificRates"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//ExternalSource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSource/rateParameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSource/targetCompartment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/targetStratum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/fixedRate"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//ExternalSink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSink/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSink/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSink/rateParameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSink/sourceCompartment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSink/sourceStratum"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//StratumSpecificRate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//StratumSpecificRate/stratum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//StratumSpecificRate/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//StratumSpecificRate/rateParameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//StratumSpecificRate/multiplier"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//StratumSpecificRate/multiplierParameter"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//Group">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Group/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Group/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Group/values"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//Product">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Product/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Product/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//Product/groups"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//CompartmentalModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/compartments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/externalSources"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/externalSinks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/groups"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/products"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/parameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//CompartmentalModel/totalPopulation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//CompartmentalModel/globalBirthRate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//CompartmentalModel/globalDeathRate"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <compartments PrimaryName="Susceptible" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Infection from infectious children" target="//@compartments.6" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.4"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Infection from infectious adults" target="//@compartments.6" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.4"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Move to un-monitored vaccination" target="//@compartments.2" rateParameter="//@parameters.1"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Move to monitored vaccination" target="//@compartments.5" rateParameter="//@parameters.2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Maturation to adult" target="//@compartments.1" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Infection from infectious children" target="//@compartments.7" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.5"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Infection from infectious adults" target="//@compartments.7" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.5"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Vaccination" target="//@compartments.4" rateParameter="//@parameters.3"/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Breakthrough infection from infectious children" target="//@compartments.6" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.15"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Breakthrough infection from infectious adults" target="//@compartments.6" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.15"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Gaining immunity" target="//@compartments.10" rateParameter="//@parameters.11"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Maturation to adult" target="//@compartments.3" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Breakthrough infection from infectious children" target="//@compartments.7" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.16"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Breakthrough infection from infectious adults" target="//@compartments.7" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.16"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Gaining immunity" target="//@compartments.11" rateParameter="//@parameters.10"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Gaining immunity" target="//@compartments.11" rateParameter="//@parameters.10"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Gaining immunity" target="//@compartments.10" rateParameter="//@parameters.12"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Progression to infectious" target="//@compartments.8" rateParameter="//@parameters.13"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Maturation to adult" target="//@compartments.7" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Progression to infectious" target="//@compartments.9" rateParameter="//@parameters.13"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Recovery" target="//@compartments.10" rateParameter="//@parameters.7"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Maturation to adult" target="//@compartments.9" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Recovery" target="//@compartments.11" rateParameter="//@parameters.7"/>
+  </compartments>
+  <compartments PrimaryName="Immune" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Maturation to adult" target="//@compartments.11" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Immune" SecondaryName="Adults"/>
+  <externalSources name="Births" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+  <externalSinks name="NaturalDeath_S_C" rateParameter="//@parameters.6" sourceCompartment="//@compartments.0"/>
+  <externalSinks name="NaturalDeath_S_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.1"/>
+  <externalSinks name="NaturalDeath_UV_C" rateParameter="//@parameters.6" sourceCompartment="//@compartments.2"/>
+  <externalSinks name="NaturalDeath_UV_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.3"/>
+  <externalSinks name="NaturalDeath_V_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.4"/>
+  <externalSinks name="NaturalDeath_MV_C" rateParameter="//@parameters.6" sourceCompartment="//@compartments.5"/>
+  <externalSinks name="NaturalDeath_E_C" rateParameter="//@parameters.6" sourceCompartment="//@compartments.6"/>
+  <externalSinks name="NaturalDeath_E_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.7"/>
+  <externalSinks name="NaturalDeath_I_C" rateParameter="//@parameters.6" sourceCompartment="//@compartments.8"/>
+  <externalSinks name="NaturalDeath_I_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.9"/>
+  <externalSinks name="NaturalDeath_Im_C" rateParameter="//@parameters.6" sourceCompartment="//@compartments.10"/>
+  <externalSinks name="NaturalDeath_Im_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.11"/>
+  <externalSinks name="DiseaseDeath_I_C" rateParameter="//@parameters.14" sourceCompartment="//@compartments.8"/>
+  <externalSinks name="DiseaseDeath_I_A" rateParameter="//@parameters.14" sourceCompartment="//@compartments.9"/>
+  <parameters name="L" description="Recruitment rate to children group"/>
+  <parameters name="x\u1d64" description="Un-monitored children Vaccination rate"/>
+  <parameters name="x\u2098" description="Monitored children Vaccination rate"/>
+  <parameters name="x\u2090" description="Adult Vaccination rate"/>
+  <parameters name="\u03b2\ua700" description="Transmission rate on the children"/>
+  <parameters name="\u03b2\u2090" description="Transmission rate on the adults"/>
+  <parameters name="\u03bc" description="Natural death rate"/>
+  <parameters name="\u03b3" description="Rate of being immune after recovery from infection"/>
+  <parameters name="j" description="Maturation rate"/>
+  <parameters name="\u03b5" description="Factor for reduced susceptibility in un-monitored vaccinated groups (1-effectiveness)"/>
+  <parameters name="\u03b7\u2090" description="Rate of being immune of vaccinated adults"/>
+  <parameters name="\u03b7\u1d64" description="Rate of being immune of Un-monitored vaccinated children"/>
+  <parameters name="\u03b7\u2098" description="Rate of being immune of Monitored vaccinated children"/>
+  <parameters name="\u03b4" description="Incubation rate (1/period)"/>
+  <parameters name="d" description="Disease induced death rate"/>
+  <parameters name="\u03b2\ua700_reduced" type="EXPRESSION" expression="\u03b2\ua700 * \u03b5" description="Reduced transmission rate for un-monitored vaccinated children"/>
+  <parameters name="\u03b2\u2090_reduced" type="EXPRESSION" expression="\u03b2\u2090 * \u03b5" description="Reduced transmission rate for un-monitored vaccinated adults"/>
+</compartmental:CompartmentalModel>

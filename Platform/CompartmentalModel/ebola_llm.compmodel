@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<compartmental:CompartmentalModel xmlns:compartmental="http://example.com/compartmentalmodel" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmi:version="2.0">
+  <parameters name="Author Keywords" expression="old (R0) of a virus to quantitatively describe the trend of an" type="CONSTANT" />
+  <parameters name="INTRODUCTION" expression="0.0" type="CONSTANT" />
+  <parameters name="recovery rate" expression="0.0" type="CONSTANT" />
+  <parameters name="disease death rate" expression="0.0" type="CONSTANT" />
+  <parameters name="DISCUSSION" expression="0.0" type="CONSTANT" />
+  <parameters name="α" expression="0." type="CONSTANT" />
+  <parameters name="β" expression="0" type="CONSTANT" />
+  <parameters name="R" expression="." type="CONSTANT" />
+  <parameters name="a" expression="0" type="CONSTANT" />
+  <parameters name="asymptotically stable" expression="1." type="CONSTANT" />
+  <parameters name="n" expression="0" type="CONSTANT" />
+  <parameters name="D&#10;R" expression="." type="CONSTANT" />
+  <parameters name="whenR" expression="1" type="CONSTANT" />
+  <parameters name="lieunderneathR" expression="1." type="CONSTANT" />
+  <parameters name="threshold R" expression="1." type="CONSTANT" />
+  <parameters name="underneathR" expression="1." type="CONSTANT" />
+  <parameters name="I&#10;underneathR" expression="1." type="CONSTANT" />
+  <parameters name="underneath R" expression="1." type="CONSTANT" />
+  <compartments PrimaryName="The effect that vaccination and quarantine, together and&#10;separately, have on the outcome of the Ebola epidemic" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="susceptible">
+    <outgoingFlows target="//@compartments.2" />
+  </compartments>
+  <compartments PrimaryName="exposed">
+    <outgoingFlows target="//@compartments.3" />
+  </compartments>
+  <compartments PrimaryName="infectious">
+    <outgoingFlows target="//@compartments.4" />
+    <outgoingFlows target="//@compartments.6" />
+    <outgoingFlows target="//@compartments.5" />
+  </compartments>
+  <compartments PrimaryName="hospitalized">
+    <outgoingFlows target="//@compartments.6" />
+    <outgoingFlows target="//@compartments.5" />
+  </compartments>
+  <compartments PrimaryName="dead" />
+  <compartments PrimaryName="removed" />
+</compartmental:CompartmentalModel>

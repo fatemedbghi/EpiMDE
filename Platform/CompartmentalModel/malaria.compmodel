@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="10933352">
+  <compartments PrimaryName="Susceptible Humans population">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Force of infection: beta1 * a(T) * Iv / Nh." target="//@compartments.1" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.2"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans Population">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Infected Humans Population" SecondaryName="">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.9"/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans Population" SecondaryName="">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.0" rateParameter="//@parameters.3"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes Population">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Force of infection: beta2 * a(T) * Ih / Nh." target="//@compartments.5" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.1"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes Population">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.6" rateParameter="//@parameters.14"/>
+  </compartments>
+  <compartments PrimaryName="Infected Mosquitoes Population"/>
+  <externalSources name="Humans" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+  <externalSources name="Mosquitoes" rateParameter="//@parameters.11" targetCompartment="//@compartments.4"/>
+  <externalSinks name="Natural_Death_SH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.0"/>
+  <externalSinks name="Natural_Death_EH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.1"/>
+  <externalSinks name="Death_IH" rateParameter="//@parameters.10" sourceCompartment="//@compartments.2"/>
+  <externalSinks name="Natural_Death_RH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.3"/>
+  <externalSinks name="Natural_Death_SM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.4"/>
+  <externalSinks name="Natural_Death_EM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.5"/>
+  <externalSinks name="Natural_Death_IM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.6"/>
+  <parameters name="αₕ" expression="15129" description="Recruitment rate of human populations" unit="people/time"/>
+  <parameters name="β₂a(T)" type="EXPRESSION" expression="β₂ * a(T)" description="Combined contact rate" unit="1/time"/>
+  <parameters name="β₁a(T)" type="EXPRESSION" expression="β₁ * a(T)" description="Combined contact rate" unit="1/time"/>
+  <parameters name="q" expression="0.98765" description="Progression rate of Rh to Sh" unit="1/time"/>
+  <parameters name="β₁" expression="0.9969" description="Probability of transmission (human)" unit="dimensionless"/>
+  <parameters name="μₕ" expression="0.001384" description="Natural mortality rate of human population" unit="1/time"/>
+  <parameters name="a(T)" type="EXPRESSION" expression="0.000203 * T * (T - 11.7) * sqrt(42.3 - T)" description="Mosquito biting rate" unit="bites/person/time"/>
+  <parameters name="μᵥ(T)" type="EXPRESSION" expression="1/((-0.03*T*T) + (1.31*T) - 4.4)" description="Mortality rate of adult mosquitoes" unit="1/time"/>
+  <parameters name="ρₕ" expression="0.001995" description="Progression rate Eh to Ih" unit="1/time"/>
+  <parameters name="γₕ" expression="0.120342" description="Recovery rate Ih to Rh" unit="1/time"/>
+  <parameters name="μₕ+δ" type="EXPRESSION" expression="μₕ + 0.017325" description="Disease-induced death rate" unit="1/time"/>
+  <parameters name="θᵥ(T,R)" type="EXPRESSION" expression="(200 * exp(-0.00554 * T + 0.06737) * 4 * R * (50 - R) * 6.75e-5) / (2 + (1 / (0.00554 * T - 0.056737))) * (1 - Nᵥ / K) * Nᵥ" description="Mosquito recruitment rate" unit="mosquitoes/time"/>
+  <parameters name="Nᵥ" expression="80000" description="Approx. Mosquito population" unit="mosquitoes"/>
+  <parameters name="β₂" expression="0.9917" description="Probability of transmission (mosquito)" unit="dimensionless"/>
+  <parameters name="Λₘ(T)" type="EXPRESSION" expression="1 / (exp(μᵥ(T)) * (111/(T - 16)))" description="Progression rate Ev to Iv" unit="1/time"/>
+  <parameters name="K" expression="100000" description="Mosquito carrying capacity" unit="mosquitoes"/>
+  <parameters name="T" type="VARIABLE" description="Temperature" unit="°C"/>
+</compartmental:CompartmentalModel>

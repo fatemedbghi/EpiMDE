@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="54551450">
+	<compartments PrimaryName="Susceptible" population="29370000"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.3"  contactRateParameter="//@parameters.2"/>
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.4"  contactRateParameter="//@parameters.2"/>
+
+  	</compartments>
+    <compartments PrimaryName="Exposed" SecondaryName="E1" population="0">  
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2"  rateParameter="//@parameters.0"/>
+  	</compartments>
+    <compartments PrimaryName="Exposed" SecondaryName="E2" population="0"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3"  rateParameter="//@parameters.0"/>
+  	</compartments>
+    <compartments PrimaryName="Infectious" SecondaryName="I1" population="1515"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.1"/>
+  	</compartments>
+    <compartments PrimaryName="Infectious" SecondaryName="I2" population="1515"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5"  rateParameter="//@parameters.1"/>
+  	</compartments>
+    <compartments PrimaryName="Removed" population="25100935" />    
+
+   
+    
+
+
+
+    <parameters name="σ" expression="1" description="Rate E1→E2, E2→I1" unit="1/day"/> 
+    <parameters name="γ" expression="0.5797" description="Rate I1→I2, I2→R" unit="1/day"/> 
+    <parameters name="β" expression="1.24" description="Transmission rate" unit="1/day"/> 
+    
+    
+ 
+
+
+</compartmental:CompartmentalModel>

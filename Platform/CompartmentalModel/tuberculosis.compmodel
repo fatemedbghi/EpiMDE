@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <compartments PrimaryName="Susceptible"> 
+    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.2" contactCompartment="//@compartments.2"  contactRateParameter="//@parameters.2"/>
+      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.1"  rateParameter="//@parameters.3"/>
+  	</compartments>
+
+    <compartments PrimaryName="Vaccinated"> 
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.0"  rateParameter="//@parameters.4"/>
+  	</compartments>
+  
+    <compartments PrimaryName="Infected"> 
+    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3"  rateParameter="//@parameters.5"/>
+  	</compartments>
+    <compartments PrimaryName="Recovered" > 
+      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.2" contactCompartment="//@compartments.2"  contactRateParameter="//@parameters.8"/>
+     	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.0"  rateParameter="//@parameters.0"/>   
+    </compartments>
+
+    <externalSources name="Birth" rateParameter="//@parameters.7" targetCompartment="//@compartments.0"/>
+    
+    <externalSinks name="Natural_Death_S" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Natural_Death_V" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Natural_Death_I" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Natural_Death_R" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
+
+    <parameters name="η" expression="0.027" description="Immunity wane rate" unit="1/day"/> 
+    <parameters name="μ" expression="0.000051" description="Death Rate" unit="1/day"/> 
+    <parameters name="π" expression="0.0059" description="Infection probability" unit="1/day"/> 
+    <parameters name="θ" expression="0.085" description="Vaccination rate" unit="1/day"/>  
+    <parameters name="δ" expression="0.00274" description="Vaccine wane rate" unit="1/day"/> 
+    <parameters name="γ" expression="0.041" description="Recovery rate" unit="1/day"/> 
+    <parameters name="α" expression="2" description="Reinfection correction" unit=""/> 
+    <parameters name="Λ" expression="98.7" description="Recuritment" unit="1/day"/> 
+    
+    <parameters name="α * π" type="EXPRESSION" expression="α * π" description="Reinfection rate" unit="1/month"/> 
+
+</compartmental:CompartmentalModel>
